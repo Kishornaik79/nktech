@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learn Python from scratch – free beginner tutorial covering variables, lists, functions, loops, OOP and more by NkTechVision."/>
+  <title>Python Tutorial – NkTechVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anybody:wght@400;600;700;800;900&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1a12;
+      --surface: #131f16;
+      --border: rgba(255,255,255,0.06);
+      --accent: #3ddc84;
+      --accent-dark: #2ab36a;
+      --accent-glow: rgba(61,220,132,0.12);
+      --accent2: #ffde57;
+      --accent3: #4a9eff;
+      --text: #e8f5ec;
+      --muted: #6b8a72;
+      --card: #182019;
+      --code-bg: #0a1009;
+      --snake: #3ddc84;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Mulish', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grid pattern */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(61,220,132,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61,220,132,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Glow */
+    .glow-orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(120px); pointer-events: none; z-index: 0;
+    }
+    .g1 { width: 600px; height: 600px; background: rgba(61,220,132,0.04); top: -200px; left: -100px; }
+    .g2 { width: 400px; height: 400px; background: rgba(255,222,87,0.03); bottom: 100px; right: -100px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(15,26,18,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Anybody', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent) !important; color: #000 !important; padding: 0.45rem 1.1rem !important; border-radius: 6px !important; font-weight: 700 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 265px 1fr; min-height: 100vh; padding-top: 65px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: sticky; top: 65px;
+      height: calc(100vh - 65px); overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 1.75rem 1.25rem;
+      background: var(--surface);
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(61,220,132,0.2); border-radius: 3px; }
+
+    .sb-snake { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .sb-brand { font-family: 'Anybody', sans-serif; font-weight: 800; font-size: 1rem; color: var(--accent); margin-bottom: 0.2rem; }
+    .sb-sub { font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .prog-row { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .prog-track { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-bottom: 1.75rem; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; width: 0%; transition: width 0.5s; }
+
+    .sb-cat { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 1.5rem 0 0.5rem 0.75rem; }
+    .sb-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.48rem 0.75rem; border-radius: 8px;
+      text-decoration: none; color: var(--muted);
+      font-size: 0.83rem; font-weight: 500;
+      margin-bottom: 0.12rem; transition: all 0.18s;
+    }
+    .sb-link:hover, .sb-link.active { background: var(--accent-glow); color: var(--accent); }
+    .sb-link .n { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.1); min-width: 18px; }
+    .sb-link.active .n { color: var(--accent); }
+
+    /* CONTENT */
+    .content { padding: 3.5rem 5rem 8rem; max-width: 900px; animation: fadeUp 0.5s ease both; }
+
+    .crumb { display: flex; gap: 0.5rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .crumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .crumb a:hover { color: var(--accent); }
+    .crumb span { opacity: 0.3; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #0d1f10 0%, #152318 50%, #0f1a0f 100%);
+      border: 1px solid rgba(61,220,132,0.18);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '🐍';
+      position: absolute; right: 2.5rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem; opacity: 0.12;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100% { transform: translateY(-50%) rotate(-5deg); } 50% { transform: translateY(-55%) rotate(5deg); } }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(61,220,132,0.1);
+      border: 1px solid rgba(61,220,132,0.25);
+      color: var(--accent);
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.3rem 0.9rem; border-radius: 100px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Anybody', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -1px; margin-bottom: 0.75rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--muted); font-weight: 300; max-width: 460px; font-size: 1rem; }
+
+    /* Sections */
+    .lesson { margin-bottom: 4.5rem; }
+    .lesson-head {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .lesson-num {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Anybody', sans-serif; font-weight: 900;
+      font-size: 0.95rem; color: #000; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(61,220,132,0.3);
+    }
+    h2 { font-family: 'Anybody', sans-serif; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+    h3 { font-family: 'Anybody', sans-serif; font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text); }
+    p { color: #9ab89f; margin-bottom: 1.2rem; font-weight: 300; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Code */
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 1.5rem 0; }
+    .code-head { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 1.2rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .dr { background: #ff5f57; } .dy { background: #ffbd2e; } .dg { background: #28ca41; }
+    .code-fname { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .copy-btn { font-size: 0.7rem; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; transition: color 0.2s; }
+    .copy-btn:hover { color: var(--accent); }
+    pre { padding: 1.5rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; line-height: 1.8; }
+    /* Python syntax colors */
+    .kw  { color: #ff79c6; }
+    .fn  { color: #3ddc84; }
+    .str { color: #ffde57; }
+    .num { color: #bd93f9; }
+    .cm  { color: #3a5c40; font-style: italic; }
+    .bi  { color: #4a9eff; }  /* built-in */
+    .cls { color: #ffb86c; }
+    .dec { color: #ff79c6; }
+    code { font-family: 'JetBrains Mono', monospace; background: rgba(61,220,132,0.08); color: var(--accent); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.84em; }
+
+    /* Callouts */
+    .callout { border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+    .tip  { background: rgba(74,158,255,0.05); border: 1px solid rgba(74,158,255,0.2); }
+    .warn { background: rgba(255,184,108,0.05); border: 1px solid rgba(255,184,108,0.2); }
+    .note { background: rgba(61,220,132,0.05); border: 1px solid rgba(61,220,132,0.15); }
+    .ct { font-weight: 700; font-size: 0.83rem; margin-bottom: 0.4rem; }
+    .tip .ct  { color: var(--accent3); }
+    .warn .ct { color: #ffb86c; }
+    .note .ct { color: var(--accent); }
+    .callout p { margin: 0; font-size: 0.9rem; color: #8aaa8f; }
+
+    /* Table */
+    .py-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .py-table thead tr { background: rgba(61,220,132,0.08); }
+    .py-table th { padding: 0.85rem 1.2rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+    .py-table td { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: #9ab89f; }
+    .py-table tr:last-child td { border-bottom: none; }
+    .py-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .py-table .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 0.82rem; }
+
+    /* Python Simulator */
+    .simulator {
+      background: var(--code-bg);
+      border: 1px solid rgba(61,220,132,0.2);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      box-shadow: 0 0 40px rgba(61,220,132,0.05);
+    }
+    .sim-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1.2rem;
+      background: #0a1009;
+      border-bottom: 1px solid var(--border);
+    }
+    .sim-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent); display: flex; align-items: center; gap: 0.5rem; }
+    .sim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .sim-btns { display: flex; gap: 0.5rem; }
+    .sim-btn { font-size: 0.7rem; color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; padding: 0.25rem 0.65rem; cursor: pointer; font-family: 'Mulish', sans-serif; transition: all 0.2s; }
+    .sim-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .sim-editor-area { display: grid; grid-template-columns: 1fr 1fr; }
+    .sim-left { border-right: 1px solid var(--border); }
+    .sim-label { padding: 0.5rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1px solid var(--border); }
+    textarea.sim-code {
+      width: 100%; background: transparent; border: none;
+      padding: 1rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem; color: #e8f5ec; line-height: 1.8;
+      resize: none; outline: none; min-height: 200px;
+    }
+    .sim-output {
+      padding: 1rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem; line-height: 1.8; min-height: 200px;
+      color: var(--accent); overflow-y: auto; white-space: pre-wrap;
+    }
+    .sim-output .err { color: #ff5f57; }
+    .sim-run {
+      display: block; width: 100%;
+      background: var(--accent); color: #000;
+      border: none; padding: 0.8rem;
+      font-family: 'Anybody', sans-serif; font-weight: 800;
+      font-size: 1rem; letter-spacing: 0.5px;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .sim-run:hover { opacity: 0.85; }
+
+    /* Challenge cards */
+    .challenge {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .ch-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,222,87,0.08); color: var(--accent2); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 100px; margin-bottom: 1rem; border: 1px solid rgba(255,222,87,0.2); }
+    .ch-title { font-family: 'Anybody', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .ch-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.25rem; }
+    .ch-input { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+    .ch-field {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.6rem 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+      color: var(--text); outline: none; transition: border-color 0.2s;
+      width: 140px;
+    }
+    .ch-field:focus { border-color: var(--accent); }
+    .ch-run { background: var(--accent); color: #000; border: none; padding: 0.6rem 1.5rem; border-radius: 8px; font-family: 'Anybody', sans-serif; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-size: 0.9rem; }
+    .ch-run:hover { opacity: 0.85; }
+    .ch-result { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; color: var(--accent); min-height: 48px; }
+
+    /* Quiz */
+    .quiz-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; margin: 2rem 0; }
+    .quiz-hd { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .quiz-ic { width: 46px; height: 46px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .quiz-ttl { font-family: 'Anybody', sans-serif; font-size: 1.3rem; font-weight: 800; }
+    .quiz-sub { font-size: 0.8rem; color: var(--muted); }
+    .q-item { margin-bottom: 2rem; }
+    .q-text { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.9rem; color: var(--text); }
+    .q-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+    .q-opt {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.72rem 1.1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer; transition: all 0.2s;
+      font-size: 0.88rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .q-opt:hover { border-color: rgba(61,220,132,0.35); }
+    .q-opt.correct { background: rgba(61,220,132,0.07); border-color: var(--accent); color: var(--accent); }
+    .q-opt.wrong { background: rgba(255,95,87,0.06); border-color: #ff5f57; color: #ff5f57; }
+    .q-opt input { accent-color: var(--accent); }
+    .quiz-submit {
+      background: var(--accent); color: #000;
+      border: none; padding: 0.9rem 2.5rem;
+      border-radius: 100px; font-family: 'Anybody', sans-serif;
+      font-weight: 800; font-size: 1.05rem; cursor: pointer;
+      box-shadow: 0 4px 25px rgba(61,220,132,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 35px rgba(61,220,132,0.45); }
+    .quiz-res { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; text-align: center; }
+    .quiz-res.show { display: block; }
+    .quiz-res.perfect { background: rgba(61,220,132,0.07); border: 1px solid rgba(61,220,132,0.3); }
+    .quiz-res.good { background: rgba(255,222,87,0.06); border: 1px solid rgba(255,222,87,0.2); }
+    .qr-em { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .qr-sc { font-family: 'Anybody', sans-serif; font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; }
+    .perfect .qr-sc { color: var(--accent); }
+    .good .qr-sc { color: var(--accent2); }
+    .qr-msg { font-size: 0.88rem; color: var(--muted); }
+
+    /* Lesson nav */
+    .lesson-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .lnav { display: flex; flex-direction: column; padding: 1rem 1.5rem; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.2s; flex: 1; max-width: 240px; }
+    .lnav:hover { border-color: rgba(61,220,132,0.4); }
+    .lnav-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .lnav-title { font-weight: 600; font-size: 0.9rem; }
+    .lnav.next { text-align: right; margin-left: auto; }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Anybody', sans-serif; font-weight: 900; font-size: 1.1rem; }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .content { padding: 2rem 1.5rem 5rem; }
+      .sim-editor-area { grid-template-columns: 1fr; }
+      .sim-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1.5rem 5%; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-orb g1"></div>
+  <div class="glow-orb g2"></div>
+
+  <nav>
+    <a href="index.html" class="logo">Nk<span>Tech</span>Vision</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="index.html#why">Why Us</a></li>
+      <li><a href="About_Me.html">About</a></li>
+      <li><a href="Contact_Us.html" class="nav-cta">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-snake">🐍</div>
+      <div class="sb-brand">Python Tutorial</div>
+      <div class="sb-sub">Beginner · 13 Lessons</div>
+
+      <div class="prog-row"><span>Progress</span><span id="progPct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+
+      <div class="sb-cat">Getting Started</div>
+      <a href="#what" class="sb-link active" onclick="setActive(this)"><span class="n">01</span> Why Python?</a>
+      <a href="#syntax" class="sb-link" onclick="setActive(this)"><span class="n">02</span> Syntax & Print</a>
+      <a href="#variables" class="sb-link" onclick="setActive(this)"><span class="n">03</span> Variables & Types</a>
+      <a href="#input" class="sb-link" onclick="setActive(this)"><span class="n">04</span> User Input</a>
+
+      <div class="sb-cat">Control Flow</div>
+      <a href="#operators" class="sb-link" onclick="setActive(this)"><span class="n">05</span> Operators</a>
+      <a href="#conditionals" class="sb-link" onclick="setActive(this)"><span class="n">06</span> If / Elif / Else</a>
+      <a href="#loops" class="sb-link" onclick="setActive(this)"><span class="n">07</span> Loops</a>
+
+      <div class="sb-cat">Data Structures</div>
+      <a href="#lists" class="sb-link" onclick="setActive(this)"><span class="n">08</span> Lists</a>
+      <a href="#dicts" class="sb-link" onclick="setActive(this)"><span class="n">09</span> Dictionaries</a>
+      <a href="#tuples" class="sb-link" onclick="setActive(this)"><span class="n">10</span> Tuples & Sets</a>
+
+      <div class="sb-cat">Functions & OOP</div>
+      <a href="#functions" class="sb-link" onclick="setActive(this)"><span class="n">11</span> Functions</a>
+      <a href="#oop" class="sb-link" onclick="setActive(this)"><span class="n">12</span> Classes & OOP</a>
+
+      <div class="sb-cat">Practice</div>
+      <a href="#quiz" class="sb-link" onclick="setActive(this)"><span class="n">13</span> Final Quiz</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <div class="crumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html#courses">Courses</a><span>/</span>
+        <span>Python Tutorial</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-tag">🐍 Beginner · Free Course</div>
+        <h1>Python — <em>Simple. Powerful.</em></h1>
+        <p>The world's most beginner-friendly programming language. Learn to write real programs for data, automation, AI, and the web — starting from zero.</p>
+      </div>
+
+      <!-- 1. WHY PYTHON -->
+      <section class="lesson" id="what">
+        <div class="lesson-head"><div class="lesson-num">1</div><h2>Why Python?</h2></div>
+        <p>Python is consistently ranked the <strong>#1 most popular programming language</strong> in the world. It powers <strong>Instagram, YouTube, NASA, Netflix</strong>, and most of the world's AI research.</p>
+
+        <table class="py-table">
+          <thead><tr><th>Python is used for</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td>Web Development</td><td>Django, Flask — build websites and APIs</td></tr>
+            <tr><td>Data Science</td><td>Pandas, NumPy — analyse and visualise data</td></tr>
+            <tr><td>Artificial Intelligence</td><td>TensorFlow, PyTorch — build AI models</td></tr>
+            <tr><td>Automation</td><td>Automate boring tasks, manage files, send emails</td></tr>
+            <tr><td>Games</td><td>Pygame — build simple 2D games</td></tr>
+            <tr><td>Scripting</td><td>Quick scripts to solve everyday problems</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout note">
+          <div class="ct">🐍 Python's Philosophy</div>
+          <p>Python values readability above all. Its creator Guido van Rossum designed it to read almost like plain English — making it the perfect first language for beginners.</p>
+        </div>
+      </section>
+
+      <!-- 2. SYNTAX & PRINT -->
+      <section class="lesson reveal" id="syntax">
+        <div class="lesson-head"><div class="lesson-num">2</div><h2>Syntax & Print</h2></div>
+        <p>Python's syntax is clean and minimal. No curly braces, no semicolons — just clean, readable code. Indentation (spaces) is how Python groups code blocks.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">hello.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># This is a comment — Python ignores it</span>
+
+<span class="cm"># Print output to the screen</span>
+<span class="bi">print</span>(<span class="str">"Hello, World!"</span>)
+<span class="bi">print</span>(<span class="str">"Welcome to NkTechVision!"</span>)
+
+<span class="cm"># Print multiple values</span>
+<span class="bi">print</span>(<span class="str">"Name:"</span>, <span class="str">"Kishor"</span>, <span class="str">"Age:"</span>, <span class="num">25</span>)
+
+<span class="cm"># f-strings — modern, clean way to format strings</span>
+<span class="kw">name</span> = <span class="str">"Kishor"</span>
+<span class="bi">print</span>(<span class="str">f"Hello, <span class="kw">{name}</span>! Welcome to Python."</span>)
+
+<span class="cm"># Print with sep and end</span>
+<span class="bi">print</span>(<span class="str">"Python"</span>, <span class="str">"is"</span>, <span class="str">"awesome"</span>, sep=<span class="str">"-"</span>)  <span class="cm"># Python-is-awesome</span>
+<span class="bi">print</span>(<span class="str">"No newline"</span>, end=<span class="str">" "</span>)
+<span class="bi">print</span>(<span class="str">"same line"</span>)</pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ct">💡 Indentation is Everything in Python</div>
+          <p>Python uses <strong>4 spaces</strong> (or 1 tab) of indentation to define code blocks — inside if statements, loops, functions, and classes. Unlike JavaScript, forgetting indentation causes an error!</p>
+        </div>
+
+        <h3>🖥️ Interactive Python Simulator</h3>
+        <p>Write Python code on the left and click <strong>Run</strong> to see the output — right in your browser!</p>
+
+        <div class="simulator">
+          <div class="sim-head">
+            <div class="sim-title"><div class="sim-dot"></div> Python Simulator</div>
+            <div class="sim-btns">
+              <button class="sim-btn" onclick="clearSim()">Clear</button>
+              <button class="sim-btn" onclick="resetSim()">Reset</button>
+            </div>
+          </div>
+          <div class="sim-editor-area">
+            <div class="sim-left">
+              <div class="sim-label">📝 Your Code</div>
+              <textarea class="sim-code" id="simCode" spellcheck="false"># Try editing this code!
+name = "Kishor"
+age = 25
+courses = ["HTML", "CSS", "Python"]
+
+print(f"Hello! My name is {name}.")
+print(f"I am {age} years old.")
+print(f"I know {len(courses)} subjects:")
+
+for course in courses:
+    print(f"  ✓ {course}")</textarea>
+            </div>
+            <div>
+              <div class="sim-label">📤 Output</div>
+              <div class="sim-output" id="simOutput">← Click Run to see output</div>
+            </div>
+          </div>
+          <button class="sim-run" onclick="runPython()">▶ RUN PYTHON</button>
+        </div>
+      </section>
+
+      <!-- 3. VARIABLES & TYPES -->
+      <section class="lesson reveal" id="variables">
+        <div class="lesson-head"><div class="lesson-num">3</div><h2>Variables & Data Types</h2></div>
+        <p>Python is <strong>dynamically typed</strong> — you don't need to declare the type of a variable. Python figures it out automatically.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">types.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># String — text</span>
+<span class="kw">name</span> = <span class="str">"NkTechVision"</span>
+<span class="kw">greeting</span> = <span class="str">'Hello!'</span>         <span class="cm"># single or double quotes</span>
+<span class="kw">multi</span> = <span class="str">"""This spans
+multiple lines."""</span>
+
+<span class="cm"># Integer — whole number</span>
+<span class="kw">age</span> = <span class="num">25</span>
+<span class="kw">year</span> = <span class="num">2025</span>
+
+<span class="cm"># Float — decimal number</span>
+<span class="kw">price</span> = <span class="num">9.99</span>
+<span class="kw">pi</span> = <span class="num">3.14159</span>
+
+<span class="cm"># Boolean — True or False (capital letters!)</span>
+<span class="kw">is_free</span> = <span class="bi">True</span>
+<span class="kw">has_ads</span> = <span class="bi">False</span>
+
+<span class="cm"># None — like null in other languages</span>
+<span class="kw">result</span> = <span class="bi">None</span>
+
+<span class="cm"># Check the type</span>
+<span class="bi">print</span>(<span class="bi">type</span>(<span class="kw">name</span>))   <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="bi">print</span>(<span class="bi">type</span>(<span class="kw">age</span>))    <span class="cm"># &lt;class 'int'&gt;</span>
+<span class="bi">print</span>(<span class="bi">type</span>(<span class="kw">price</span>))  <span class="cm"># &lt;class 'float'&gt;</span>
+
+<span class="cm"># Type conversion</span>
+<span class="kw">num_str</span> = <span class="str">"42"</span>
+<span class="kw">num_int</span> = <span class="bi">int</span>(<span class="kw">num_str</span>)  <span class="cm"># "42" → 42</span>
+<span class="kw">num_flt</span> = <span class="bi">float</span>(<span class="kw">age</span>)   <span class="cm"># 25 → 25.0</span></pre>
+        </div>
+      </section>
+
+      <!-- 4. INPUT -->
+      <section class="lesson reveal" id="input">
+        <div class="lesson-head"><div class="lesson-num">4</div><h2>User Input</h2></div>
+        <p>Use the <code>input()</code> function to get text from the user. It always returns a <strong>string</strong>, so convert it if you need a number.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">input_demo.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># Get text from user</span>
+<span class="kw">name</span> = <span class="bi">input</span>(<span class="str">"What is your name? "</span>)
+<span class="bi">print</span>(<span class="str">f"Hello, {name}!"</span>)
+
+<span class="cm"># Get a number — must convert with int()</span>
+<span class="kw">age</span> = <span class="bi">int</span>(<span class="bi">input</span>(<span class="str">"How old are you? "</span>))
+<span class="bi">print</span>(<span class="str">f"In 10 years you will be {age + 10}."</span>)
+
+<span class="cm"># Simple calculator</span>
+<span class="kw">a</span> = <span class="bi">float</span>(<span class="bi">input</span>(<span class="str">"First number: "</span>))
+<span class="kw">b</span> = <span class="bi">float</span>(<span class="bi">input</span>(<span class="str">"Second number: "</span>))
+<span class="bi">print</span>(<span class="str">f"{a} + {b} = {a + b}"</span>)
+<span class="bi">print</span>(<span class="str">f"{a} × {b} = {a * b}"</span>)</pre>
+        </div>
+
+        <h3>🧮 Try It — Calculator</h3>
+        <div class="challenge">
+          <div class="ch-badge">⚡ Interactive Demo</div>
+          <div class="ch-title">Simple Calculator</div>
+          <p class="ch-desc">Enter two numbers and see Python-style calculations:</p>
+          <div class="ch-input">
+            <input type="number" class="ch-field" id="calcA" placeholder="First number" value="15"/>
+            <input type="number" class="ch-field" id="calcB" placeholder="Second number" value="4"/>
+            <button class="ch-run" onclick="runCalc()">Calculate</button>
+          </div>
+          <div class="ch-result" id="calcResult">Enter numbers and click Calculate</div>
+        </div>
+      </section>
+
+      <!-- 5. OPERATORS -->
+      <section class="lesson reveal" id="operators">
+        <div class="lesson-head"><div class="lesson-num">5</div><h2>Operators</h2></div>
+
+        <table class="py-table">
+          <thead><tr><th>Type</th><th>Operators</th><th>Example</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Arithmetic</td><td><code>+ - * / // % **</code></td><td><code>17 // 5</code></td><td>3 (floor division)</td></tr>
+            <tr><td>Comparison</td><td><code>== != > < >= <=</code></td><td><code>10 != 5</code></td><td>True</td></tr>
+            <tr><td>Logical</td><td><code>and or not</code></td><td><code>True and False</code></td><td>False</td></tr>
+            <tr><td>Assignment</td><td><code>= += -= *= /=</code></td><td><code>x += 10</code></td><td>x = x + 10</td></tr>
+            <tr><td>Membership</td><td><code>in  not in</code></td><td><code>"py" in "python"</code></td><td>True</td></tr>
+            <tr><td>Identity</td><td><code>is  is not</code></td><td><code>x is None</code></td><td>True/False</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">operators.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="bi">print</span>(<span class="num">10</span> + <span class="num">3</span>)   <span class="cm"># 13   addition</span>
+<span class="bi">print</span>(<span class="num">10</span> - <span class="num">3</span>)   <span class="cm"># 7    subtraction</span>
+<span class="bi">print</span>(<span class="num">10</span> * <span class="num">3</span>)   <span class="cm"># 30   multiplication</span>
+<span class="bi">print</span>(<span class="num">10</span> / <span class="num">3</span>)   <span class="cm"># 3.33 true division</span>
+<span class="bi">print</span>(<span class="num">10</span> // <span class="num">3</span>)  <span class="cm"># 3    floor division</span>
+<span class="bi">print</span>(<span class="num">10</span> % <span class="num">3</span>)   <span class="cm"># 1    modulo (remainder)</span>
+<span class="bi">print</span>(<span class="num">2</span> ** <span class="num">8</span>)   <span class="cm"># 256  exponentiation (2⁸)</span>
+
+<span class="cm"># Membership operator</span>
+<span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"mango"</span>, <span class="str">"banana"</span>]
+<span class="bi">print</span>(<span class="str">"mango"</span> <span class="kw">in</span> <span class="kw">fruits</span>)     <span class="cm"># True</span>
+<span class="bi">print</span>(<span class="str">"grape"</span> <span class="kw">not in</span> <span class="kw">fruits</span>)  <span class="cm"># True</span></pre>
+        </div>
+      </section>
+
+      <!-- 6. IF/ELIF/ELSE -->
+      <section class="lesson reveal" id="conditionals">
+        <div class="lesson-head"><div class="lesson-num">6</div><h2>If / Elif / Else</h2></div>
+        <p>Python uses <code>if</code>, <code>elif</code> (else if), and <code>else</code> to make decisions. Notice: <strong>no parentheses needed</strong> around the condition, and end with a <strong>colon :</strong></p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">conditions.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">score</span> = <span class="num">78</span>
+
+<span class="kw">if</span> <span class="kw">score</span> >= <span class="num">90</span>:
+    <span class="bi">print</span>(<span class="str">"Grade: A — Excellent!"</span>)
+<span class="kw">elif</span> <span class="kw">score</span> >= <span class="num">70</span>:
+    <span class="bi">print</span>(<span class="str">"Grade: B — Good job!"</span>)   <span class="cm"># This runs</span>
+<span class="kw">elif</span> <span class="kw">score</span> >= <span class="num">50</span>:
+    <span class="bi">print</span>(<span class="str">"Grade: C — Pass"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="str">"Grade: F — Try again"</span>)
+
+<span class="cm"># Multiple conditions with and / or</span>
+<span class="kw">age</span> = <span class="num">20</span>
+<span class="kw">has_id</span> = <span class="bi">True</span>
+<span class="kw">if</span> <span class="kw">age</span> >= <span class="num">18</span> <span class="kw">and</span> <span class="kw">has_id</span>:
+    <span class="bi">print</span>(<span class="str">"Access granted"</span>)
+
+<span class="cm"># One-line ternary (conditional expression)</span>
+<span class="kw">status</span> = <span class="str">"Adult"</span> <span class="kw">if</span> <span class="kw">age</span> >= <span class="num">18</span> <span class="kw">else</span> <span class="str">"Minor"</span>
+<span class="bi">print</span>(<span class="kw">status</span>)  <span class="cm"># Adult</span></pre>
+        </div>
+
+        <h3>🎯 Grade Checker</h3>
+        <div class="challenge">
+          <div class="ch-badge">⚡ Interactive Demo</div>
+          <div class="ch-title">Grade Calculator</div>
+          <p class="ch-desc">Enter a score and see what grade Python gives you:</p>
+          <div class="ch-input">
+            <input type="number" class="ch-field" id="scoreInput" placeholder="Score (0-100)" value="78" min="0" max="100"/>
+            <button class="ch-run" onclick="checkGrade()">Check Grade</button>
+          </div>
+          <div class="ch-result" id="gradeResult">Enter a score and click Check Grade</div>
+        </div>
+      </section>
+
+      <!-- 7. LOOPS -->
+      <section class="lesson reveal" id="loops">
+        <div class="lesson-head"><div class="lesson-num">7</div><h2>Loops</h2></div>
+        <p>Python has two main loop types: <code>for</code> loops (iterate over a sequence) and <code>while</code> loops (repeat while a condition is true).</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">loops.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># FOR loop with range()</span>
+<span class="kw">for</span> <span class="kw">i</span> <span class="kw">in</span> <span class="bi">range</span>(<span class="num">1</span>, <span class="num">6</span>):     <span class="cm"># 1 to 5</span>
+    <span class="bi">print</span>(<span class="str">f"Count: {i}"</span>)
+
+<span class="cm"># FOR loop over a list</span>
+<span class="kw">languages</span> = [<span class="str">"Python"</span>, <span class="str">"JavaScript"</span>, <span class="str">"Java"</span>]
+<span class="kw">for</span> <span class="kw">lang</span> <span class="kw">in</span> <span class="kw">languages</span>:
+    <span class="bi">print</span>(<span class="str">f"Language: {lang}"</span>)
+
+<span class="cm"># enumerate() — get index AND value</span>
+<span class="kw">for</span> <span class="kw">i</span>, <span class="kw">lang</span> <span class="kw">in</span> <span class="bi">enumerate</span>(<span class="kw">languages</span>, <span class="num">1</span>):
+    <span class="bi">print</span>(<span class="str">f"{i}. {lang}"</span>)
+
+<span class="cm"># WHILE loop</span>
+<span class="kw">count</span> = <span class="num">0</span>
+<span class="kw">while</span> <span class="kw">count</span> < <span class="num">3</span>:
+    <span class="bi">print</span>(<span class="str">f"count = {count}"</span>)
+    <span class="kw">count</span> += <span class="num">1</span>
+
+<span class="cm"># break and continue</span>
+<span class="kw">for</span> <span class="kw">num</span> <span class="kw">in</span> <span class="bi">range</span>(<span class="num">10</span>):
+    <span class="kw">if</span> <span class="kw">num</span> == <span class="num">3</span>: <span class="kw">continue</span>  <span class="cm"># skip 3</span>
+    <span class="kw">if</span> <span class="kw">num</span> == <span class="num">7</span>: <span class="kw">break</span>    <span class="cm"># stop at 7</span>
+    <span class="bi">print</span>(<span class="kw">num</span>)
+
+<span class="cm"># List comprehension — powerful one-liner loop</span>
+<span class="kw">squares</span> = [<span class="kw">x</span>**<span class="num">2</span> <span class="kw">for</span> <span class="kw">x</span> <span class="kw">in</span> <span class="bi">range</span>(<span class="num">1</span>, <span class="num">6</span>)]
+<span class="bi">print</span>(<span class="kw">squares</span>)  <span class="cm"># [1, 4, 9, 16, 25]</span></pre>
+        </div>
+      </section>
+
+      <!-- 8. LISTS -->
+      <section class="lesson reveal" id="lists">
+        <div class="lesson-head"><div class="lesson-num">8</div><h2>Lists</h2></div>
+        <p>A Python <strong>list</strong> is an ordered, changeable collection of items. It can hold any mix of data types.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">lists.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">courses</span> = [<span class="str">"HTML"</span>, <span class="str">"CSS"</span>, <span class="str">"JavaScript"</span>, <span class="str">"Python"</span>]
+
+<span class="cm"># Access by index (starts at 0, -1 = last)</span>
+<span class="bi">print</span>(<span class="kw">courses</span>[<span class="num">0</span>])   <span class="cm"># "HTML"</span>
+<span class="bi">print</span>(<span class="kw">courses</span>[-<span class="num">1</span>])  <span class="cm"># "Python"</span>
+
+<span class="cm"># Slicing — get a portion</span>
+<span class="bi">print</span>(<span class="kw">courses</span>[<span class="num">1</span>:<span class="num">3</span>])  <span class="cm"># ["CSS", "JavaScript"]</span>
+
+<span class="cm"># Common methods</span>
+<span class="kw">courses</span>.<span class="fn">append</span>(<span class="str">"Java"</span>)      <span class="cm"># add to end</span>
+<span class="kw">courses</span>.<span class="fn">insert</span>(<span class="num">0</span>, <span class="str">"English"</span>) <span class="cm"># insert at index</span>
+<span class="kw">courses</span>.<span class="fn">remove</span>(<span class="str">"CSS"</span>)       <span class="cm"># remove by value</span>
+<span class="kw">courses</span>.<span class="fn">sort</span>()               <span class="cm"># sort alphabetically</span>
+<span class="kw">courses</span>.<span class="fn">reverse</span>()           <span class="cm"># reverse order</span>
+<span class="bi">print</span>(<span class="bi">len</span>(<span class="kw">courses</span>))          <span class="cm"># number of items</span>
+
+<span class="cm"># Check if item exists</span>
+<span class="kw">if</span> <span class="str">"Python"</span> <span class="kw">in</span> <span class="kw">courses</span>:
+    <span class="bi">print</span>(<span class="str">"Python is in the list!"</span>)</pre>
+        </div>
+      </section>
+
+      <!-- 9. DICTIONARIES -->
+      <section class="lesson reveal" id="dicts">
+        <div class="lesson-head"><div class="lesson-num">9</div><h2>Dictionaries</h2></div>
+        <p>A <strong>dictionary</strong> stores data as <strong>key: value</strong> pairs — like a real dictionary where you look up a word (key) to get its meaning (value).</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">dicts.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">student</span> = {
+    <span class="str">"name"</span>: <span class="str">"Kishor"</span>,
+    <span class="str">"age"</span>: <span class="num">25</span>,
+    <span class="str">"courses"</span>: [<span class="str">"Python"</span>, <span class="str">"JavaScript"</span>],
+    <span class="str">"enrolled"</span>: <span class="bi">True</span>
+}
+
+<span class="cm"># Access values</span>
+<span class="bi">print</span>(<span class="kw">student</span>[<span class="str">"name"</span>])         <span class="cm"># Kishor</span>
+<span class="bi">print</span>(<span class="kw">student</span>.<span class="fn">get</span>(<span class="str">"age"</span>))      <span class="cm"># 25 (safe access)</span>
+<span class="bi">print</span>(<span class="kw">student</span>.<span class="fn">get</span>(<span class="str">"grade"</span>, <span class="str">"N/A"</span>))  <span class="cm"># N/A (default)</span>
+
+<span class="cm"># Add / update</span>
+<span class="kw">student</span>[<span class="str">"city"</span>] = <span class="str">"Mumbai"</span>
+<span class="kw">student</span>[<span class="str">"age"</span>] = <span class="num">26</span>
+
+<span class="cm"># Loop through dictionary</span>
+<span class="kw">for</span> <span class="kw">key</span>, <span class="kw">value</span> <span class="kw">in</span> <span class="kw">student</span>.<span class="fn">items</span>():
+    <span class="bi">print</span>(<span class="str">f"{key}: {value}"</span>)
+
+<span class="cm"># Check if key exists</span>
+<span class="kw">if</span> <span class="str">"name"</span> <span class="kw">in</span> <span class="kw">student</span>:
+    <span class="bi">print</span>(<span class="str">"Name found!"</span>)
+
+<span class="cm"># Delete a key</span>
+<span class="kw">del</span> <span class="kw">student</span>[<span class="str">"enrolled"</span>]</pre>
+        </div>
+      </section>
+
+      <!-- 10. TUPLES & SETS -->
+      <section class="lesson reveal" id="tuples">
+        <div class="lesson-head"><div class="lesson-num">10</div><h2>Tuples & Sets</h2></div>
+
+        <table class="py-table">
+          <thead><tr><th>Structure</th><th>Syntax</th><th>Mutable?</th><th>Ordered?</th><th>Duplicates?</th></tr></thead>
+          <tbody>
+            <tr><td>List</td><td><code>[1, 2, 3]</code></td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+            <tr><td>Tuple</td><td><code>(1, 2, 3)</code></td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+            <tr><td>Set</td><td><code>{1, 2, 3}</code></td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+            <tr><td>Dictionary</td><td><code>{"a": 1}</code></td><td>✅ Yes</td><td>✅ Yes</td><td>Keys: No</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">tuples_sets.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># Tuple — immutable (can't change after creation)</span>
+<span class="kw">coordinates</span> = (<span class="num">19.07</span>, <span class="num">72.87</span>)  <span class="cm"># latitude, longitude</span>
+<span class="kw">rgb</span> = (<span class="num">255</span>, <span class="num">165</span>, <span class="num">0</span>)            <span class="cm"># orange color</span>
+<span class="kw">lat</span>, <span class="kw">lng</span> = <span class="kw">coordinates</span>         <span class="cm"># tuple unpacking</span>
+
+<span class="cm"># Set — unique values, no duplicates, no order</span>
+<span class="kw">unique_visitors</span> = {<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Alice"</span>, <span class="str">"Kishor"</span>}
+<span class="bi">print</span>(<span class="kw">unique_visitors</span>)  <span class="cm"># {'Alice', 'Bob', 'Kishor'}</span>
+
+<span class="cm"># Set operations — powerful for comparing groups</span>
+<span class="kw">a</span> = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}
+<span class="kw">b</span> = {<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>}
+<span class="bi">print</span>(<span class="kw">a</span> | <span class="kw">b</span>)  <span class="cm"># Union: {1,2,3,4,5,6}</span>
+<span class="bi">print</span>(<span class="kw">a</span> & <span class="kw">b</span>)  <span class="cm"># Intersection: {3,4}</span>
+<span class="bi">print</span>(<span class="kw">a</span> - <span class="kw">b</span>)  <span class="cm"># Difference: {1,2}</span></pre>
+        </div>
+      </section>
+
+      <!-- 11. FUNCTIONS -->
+      <section class="lesson reveal" id="functions">
+        <div class="lesson-head"><div class="lesson-num">11</div><h2>Functions</h2></div>
+        <p>Functions let you write code once and reuse it anywhere. In Python, define a function with <code>def</code>.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">functions.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm"># Basic function</span>
+<span class="kw">def</span> <span class="fn">greet</span>(<span class="kw">name</span>):
+    <span class="bi">print</span>(<span class="str">f"Hello, {name}! Welcome to NkTechVision."</span>)
+
+<span class="fn">greet</span>(<span class="str">"Kishor"</span>)
+
+<span class="cm"># Function with return value</span>
+<span class="kw">def</span> <span class="fn">add</span>(<span class="kw">a</span>, <span class="kw">b</span>):
+    <span class="kw">return</span> <span class="kw">a</span> + <span class="kw">b</span>
+
+<span class="kw">result</span> = <span class="fn">add</span>(<span class="num">10</span>, <span class="num">25</span>)
+<span class="bi">print</span>(<span class="kw">result</span>)  <span class="cm"># 35</span>
+
+<span class="cm"># Default parameters</span>
+<span class="kw">def</span> <span class="fn">power</span>(<span class="kw">base</span>, <span class="kw">exponent</span>=<span class="num">2</span>):
+    <span class="kw">return</span> <span class="kw">base</span> ** <span class="kw">exponent</span>
+
+<span class="bi">print</span>(<span class="fn">power</span>(<span class="num">5</span>))      <span class="cm"># 25  (5²)</span>
+<span class="bi">print</span>(<span class="fn">power</span>(<span class="num">2</span>, <span class="num">10</span>)) <span class="cm"># 1024 (2¹⁰)</span>
+
+<span class="cm"># *args — accept any number of arguments</span>
+<span class="kw">def</span> <span class="fn">total</span>(*<span class="kw">nums</span>):
+    <span class="kw">return</span> <span class="bi">sum</span>(<span class="kw">nums</span>)
+
+<span class="bi">print</span>(<span class="fn">total</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>))  <span class="cm"># 15</span>
+
+<span class="cm"># Lambda — one-line anonymous function</span>
+<span class="kw">square</span> = <span class="kw">lambda</span> <span class="kw">x</span>: <span class="kw">x</span> ** <span class="num">2</span>
+<span class="bi">print</span>(<span class="kw">square</span>(<span class="num">7</span>))  <span class="cm"># 49</span></pre>
+        </div>
+
+        <h3>🧪 Function Tester</h3>
+        <div class="challenge">
+          <div class="ch-badge">⚡ Interactive Demo</div>
+          <div class="ch-title">Power Function</div>
+          <p class="ch-desc">Test Python's <code>power(base, exponent)</code> function:</p>
+          <div class="ch-input">
+            <input type="number" class="ch-field" id="baseNum" placeholder="Base" value="2" style="width:100px"/>
+            <input type="number" class="ch-field" id="expNum" placeholder="Exponent" value="10" style="width:120px"/>
+            <button class="ch-run" onclick="runPower()">Calculate</button>
+          </div>
+          <div class="ch-result" id="powerResult">Click Calculate to run the function</div>
+        </div>
+      </section>
+
+      <!-- 12. OOP -->
+      <section class="lesson reveal" id="oop">
+        <div class="lesson-head"><div class="lesson-num">12</div><h2>Classes & OOP</h2></div>
+        <p><strong>Object-Oriented Programming (OOP)</strong> organises code around <strong>objects</strong> — bundles of data and behaviour. A <strong>class</strong> is a blueprint; an <strong>object</strong> is an instance of that blueprint.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">oop.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">class</span> <span class="cls">Student</span>:
+    <span class="cm">"""A class representing a student"""</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, <span class="kw">name</span>, <span class="kw">age</span>):
+        <span class="cm"># Instance variables</span>
+        <span class="bi">self</span>.<span class="kw">name</span> = <span class="kw">name</span>
+        <span class="bi">self</span>.<span class="kw">age</span> = <span class="kw">age</span>
+        <span class="bi">self</span>.<span class="kw">courses</span> = []
+
+    <span class="kw">def</span> <span class="fn">enrol</span>(<span class="bi">self</span>, <span class="kw">course</span>):
+        <span class="bi">self</span>.<span class="kw">courses</span>.<span class="fn">append</span>(<span class="kw">course</span>)
+        <span class="bi">print</span>(<span class="str">f"{self.name} enrolled in {course}!"</span>)
+
+    <span class="kw">def</span> <span class="fn">info</span>(<span class="bi">self</span>):
+        <span class="bi">print</span>(<span class="str">f"Name: {self.name}, Age: {self.age}"</span>)
+        <span class="bi">print</span>(<span class="str">f"Courses: {', '.join(self.courses)}"</span>)
+
+<span class="cm"># Create objects (instances) from the class</span>
+<span class="kw">s1</span> = <span class="cls">Student</span>(<span class="str">"Kishor"</span>, <span class="num">25</span>)
+<span class="kw">s2</span> = <span class="cls">Student</span>(<span class="str">"Priya"</span>, <span class="num">22</span>)
+
+<span class="kw">s1</span>.<span class="fn">enrol</span>(<span class="str">"Python"</span>)
+<span class="kw">s1</span>.<span class="fn">enrol</span>(<span class="str">"JavaScript"</span>)
+<span class="kw">s1</span>.<span class="fn">info</span>()
+
+<span class="cm"># Inheritance — one class extending another</span>
+<span class="kw">class</span> <span class="cls">GraduateStudent</span>(<span class="cls">Student</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, <span class="kw">name</span>, <span class="kw">age</span>, <span class="kw">thesis</span>):
+        <span class="bi">super</span>().<span class="fn">__init__</span>(<span class="kw">name</span>, <span class="kw">age</span>)  <span class="cm"># call parent</span>
+        <span class="bi">self</span>.<span class="kw">thesis</span> = <span class="kw">thesis</span>
+
+    <span class="kw">def</span> <span class="fn">info</span>(<span class="bi">self</span>):
+        <span class="bi">super</span>().<span class="fn">info</span>()
+        <span class="bi">print</span>(<span class="str">f"Thesis: {self.thesis}"</span>)</pre>
+        </div>
+
+        <div class="callout note">
+          <div class="ct">🐍 Python OOP Key Concepts</div>
+          <p><strong>self</strong> refers to the current instance. <strong>__init__</strong> is the constructor — runs when you create an object. <strong>super()</strong> calls the parent class. <strong>Inheritance</strong> lets child classes reuse parent code.</p>
+        </div>
+      </section>
+
+      <!-- 13. QUIZ -->
+      <section class="lesson reveal" id="quiz">
+        <div class="quiz-wrap">
+          <div class="quiz-hd">
+            <div class="quiz-ic">🧪</div>
+            <div>
+              <div class="quiz-ttl">Python Final Quiz</div>
+              <div class="quiz-sub">5 questions · Prove your Python skills</div>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">1. Which keyword is used to define a function in Python?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q1" value="a"> function</label>
+              <label class="q-opt"><input type="radio" name="q1" value="b"> def</label>
+              <label class="q-opt"><input type="radio" name="q1" value="c"> fun</label>
+              <label class="q-opt"><input type="radio" name="q1" value="d"> define</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">2. What is the output of <code>print(10 // 3)</code>?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q2" value="a"> 3.33</label>
+              <label class="q-opt"><input type="radio" name="q2" value="b"> 1</label>
+              <label class="q-opt"><input type="radio" name="q2" value="c"> 3</label>
+              <label class="q-opt"><input type="radio" name="q2" value="d"> 4</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">3. Which data structure does NOT allow duplicate values?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q3" value="a"> List</label>
+              <label class="q-opt"><input type="radio" name="q3" value="b"> Tuple</label>
+              <label class="q-opt"><input type="radio" name="q3" value="c"> Dictionary</label>
+              <label class="q-opt"><input type="radio" name="q3" value="d"> Set</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">4. What does <code>len(["a", "b", "c"])</code> return?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q4" value="a"> 2</label>
+              <label class="q-opt"><input type="radio" name="q4" value="b"> 3</label>
+              <label class="q-opt"><input type="radio" name="q4" value="c"> 4</label>
+              <label class="q-opt"><input type="radio" name="q4" value="d"> "abc"</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">5. Which method adds an item to the end of a Python list?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q5" value="a"> .add()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="b"> .push()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="c"> .append()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="d"> .insert()</label>
+            </div>
+          </div>
+
+          <button class="quiz-submit" onclick="runQuiz()">Submit Answers</button>
+
+          <div class="quiz-res" id="quizRes">
+            <div class="qr-em" id="qrE"></div>
+            <div class="qr-sc" id="qrS"></div>
+            <div class="qr-msg" id="qrM"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-nav">
+        <a href="javascript_tutorial.html" class="lnav">
+          <span class="lnav-lbl">← Previous</span>
+          <span class="lnav-title">JavaScript Tutorial</span>
+        </a>
+        <a href="https://www.w3schools.com/java/default.asp" target="_blank" class="lnav next">
+          <span class="lnav-lbl">Next Course →</span>
+          <span class="lnav-title">Java Tutorial</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Nk<span>Tech</span>Vision</div>
+    <p class="footer-copy">© 2025 NkTechVision. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="About_Me.html">About</a>
+      <a href="Contact_Us.html">Contact</a>
+      <a href="index.html#courses">Courses</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    // Sidebar + progress
+    function setActive(el) {
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+      updateProg();
+    }
+    function updateProg() {
+      const links = document.querySelectorAll('.sb-link');
+      const active = document.querySelector('.sb-link.active');
+      const idx = Array.from(links).indexOf(active) + 1;
+      const pct = Math.round((idx / links.length) * 100);
+      document.getElementById('progFill').style.width = pct + '%';
+      document.getElementById('progPct').textContent = pct + '%';
+    }
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+      updateProg();
+    });
+
+    // Python simulator — interprets a subset of Python in JS
+    function runPython() {
+      const code = document.getElementById('simCode').value;
+      const out = document.getElementById('simOutput');
+      out.innerHTML = '';
+      const lines = [];
+
+      // Sandboxed Python-like interpreter
+      try {
+        // Replace Python print() with JS equivalent
+        const jsCode = pythonToJS(code);
+        const origLog = console.log;
+        const captured = [];
+        console.log = (...args) => captured.push(args.join(' '));
+        eval(jsCode);
+        console.log = origLog;
+        if (captured.length === 0) {
+          out.innerHTML = '<span style="color:var(--muted)">// No output</span>';
+        } else {
+          out.textContent = captured.join('\n');
+        }
+      } catch(e) {
+        out.innerHTML = `<span class="err">Error: ${e.message}</span>`;
+      }
+    }
+
+    function pythonToJS(code) {
+      return code
+        // Remove docstrings
+        .replace(/"""[\s\S]*?"""/g, '')
+        // f-strings with {var}
+        .replace(/f"(.*?)"/g, (_, s) => '`' + s.replace(/\{([^}]+)\}/g, '${$1}') + '`')
+        .replace(/f'(.*?)'/g, (_, s) => '`' + s.replace(/\{([^}]+)\}/g, '${$1}') + '`')
+        // print() → console.log()
+        .replace(/\bprint\s*\(/g, 'console.log(')
+        // Python True/False/None → JS
+        .replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false').replace(/\bNone\b/g, 'null')
+        // Python def → function
+        .replace(/^(\s*)def (\w+)\((.*?)\):/gm, '$1function $2($3) {')
+        // for x in range(n)
+        .replace(/for (\w+) in range\((\d+),\s*(\d+)\):/g, 'for (let $1 = $2; $1 < $3; $1++) {')
+        .replace(/for (\w+) in range\((\d+)\):/g, 'for (let $1 = 0; $1 < $2; $1++) {')
+        // for x in list
+        .replace(/for (\w+) in (\w+):/g, 'for (const $1 of $2) {')
+        // if/elif/else
+        .replace(/^(\s*)elif (.+):/gm, '$1} else if ($2) {')
+        .replace(/^(\s*)if (.+):/gm, '$1if ($2) {')
+        .replace(/^(\s*)else:/gm, '$1} else {')
+        // while
+        .replace(/^(\s*)while (.+):/gm, '$1while ($2) {')
+        // len() → .length
+        .replace(/\blen\((\w+)\)/g, '$1.length')
+        // Python list methods
+        .replace(/\.append\(/g, '.push(')
+        // Add closing braces (simplified)
+        .split('\n').map((line, i, arr) => {
+          if (line.trimEnd().endsWith('{')) return line;
+          const indent = line.match(/^(\s*)/)[1].length;
+          const nextLine = arr[i + 1];
+          if (nextLine !== undefined) {
+            const nextIndent = nextLine.match(/^(\s*)/)[1].length;
+            if (nextIndent < indent && !line.trim().startsWith('//')) {
+              return line + '}';
+            }
+          }
+          return line;
+        }).join('\n')
+        // let declarations
+        .replace(/^(\s*)(\w+)\s*=/gm, (m, sp, name) => {
+          if (['if','for','while','function','let','const','var','return','console','else'].some(k => m.trim().startsWith(k))) return m;
+          return `${sp}let ${name} =`;
+        })
+        // string quotes
+        .replace(/'([^']*)'/g, '"$1"');
+    }
+
+    function clearSim() { document.getElementById('simOutput').textContent = '// Output cleared'; }
+    function resetSim() {
+      document.getElementById('simCode').value = `# Try editing this code!
+name = "Kishor"
+age = 25
+courses = ["HTML", "CSS", "Python"]
+
+print(f"Hello! My name is {name}.")
+print(f"I am {age} years old.")
+print(f"I know {len(courses)} subjects:")
+
+for course in courses:
+    print(f"  ✓ {course}")`;
+      clearSim();
+    }
+
+    // Calculator demo
+    function runCalc() {
+      const a = parseFloat(document.getElementById('calcA').value) || 0;
+      const b = parseFloat(document.getElementById('calcB').value) || 0;
+      if (b === 0) {
+        document.getElementById('calcResult').textContent = `${a} + ${b} = ${a+b}\n${a} - ${b} = ${a-b}\n${a} * ${b} = ${a*b}\nDivision by zero!`;
+        return;
+      }
+      document.getElementById('calcResult').textContent =
+        `${a} + ${b} = ${a+b}\n${a} - ${b} = ${a-b}\n${a} * ${b} = ${a*b}\n${a} / ${b} = ${(a/b).toFixed(4)}\n${a} // ${b} = ${Math.floor(a/b)}\n${a} % ${b} = ${a%b}`;
+    }
+
+    // Grade checker
+    function checkGrade() {
+      const score = parseInt(document.getElementById('scoreInput').value);
+      let grade, msg;
+      if (isNaN(score) || score < 0 || score > 100) { document.getElementById('gradeResult').textContent = 'Please enter a valid score (0-100)'; return; }
+      if (score >= 90)      { grade = 'A'; msg = 'Excellent! 🌟'; }
+      else if (score >= 70) { grade = 'B'; msg = 'Good job! 👍'; }
+      else if (score >= 50) { grade = 'C'; msg = 'Pass ✓'; }
+      else                  { grade = 'F'; msg = 'Try again 📖'; }
+      document.getElementById('gradeResult').textContent = `score = ${score}\n\nGrade: ${grade} — ${msg}`;
+    }
+
+    // Power function demo
+    function runPower() {
+      const base = parseFloat(document.getElementById('baseNum').value);
+      const exp = parseFloat(document.getElementById('expNum').value);
+      const result = Math.pow(base, exp);
+      document.getElementById('powerResult').textContent =
+        `def power(base=${base}, exponent=${exp}):\n    return base ** exponent\n\nResult: ${base} ** ${exp} = ${result}`;
+    }
+
+    // Copy code
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Quiz
+    const answers = { q1:'b', q2:'c', q3:'d', q4:'b', q5:'c' };
+    function runQuiz() {
+      let score = 0;
+      Object.keys(answers).forEach(q => {
+        const sel = document.querySelector(`input[name="${q}"]:checked`);
+        document.querySelectorAll(`input[name="${q}"]`).forEach(o => {
+          const lbl = o.closest('.q-opt');
+          lbl.classList.remove('correct','wrong');
+          if (o.value === answers[q]) lbl.classList.add('correct');
+          else if (sel && o.value === sel.value) lbl.classList.add('wrong');
+          o.disabled = true;
+        });
+        if (sel && sel.value === answers[q]) score++;
+      });
+      const box = document.getElementById('quizRes');
+      box.classList.add('show');
+      if (score === 5) {
+        box.className = 'quiz-res show perfect';
+        document.getElementById('qrE').textContent = '🏆';
+        document.getElementById('qrS').textContent = '5 / 5 — Perfect!';
+        document.getElementById('qrM').textContent = 'You\'ve mastered Python basics! Ready for Java next.';
+      } else {
+        box.className = 'quiz-res show good';
+        document.getElementById('qrE').textContent = score >= 3 ? '🐍' : '📖';
+        document.getElementById('qrS').textContent = `${score} / 5`;
+        document.getElementById('qrM').textContent = score >= 3 ? 'Great work! Review the highlighted answers.' : 'Go back through the lessons and try again. You can do it!';
+      }
+    }
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+    }), { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    updateProg();
+    runCalc();
+  </script>
+</body>
+</html>
