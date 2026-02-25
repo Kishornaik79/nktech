@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learn JavaScript from scratch – free beginner tutorial covering variables, functions, DOM, events, and more by NkTechVision."/>
+  <title>JavaScript Tutorial – NkTechVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: rgba(255,255,255,0.06);
+      --accent: #f7df1e;
+      --accent-dark: #c8b800;
+      --accent-glow: rgba(247,223,30,0.15);
+      --accent2: #61dafb;
+      --accent3: #7fffb2;
+      --text: #f0f0f0;
+      --muted: #666;
+      --card: #1a1a1a;
+      --code-bg: #080808;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Scanline overlay effect */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Glow orbs */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(247,223,30,0.04); top: -100px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(97,218,251,0.03); bottom: 0; left: -100px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(13,13,13,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--text); text-decoration: none; letter-spacing: 1px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent) !important; color: #000 !important; padding: 0.45rem 1.1rem !important; border-radius: 4px !important; font-weight: 700 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 65px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: sticky; top: 65px;
+      height: calc(100vh - 65px); overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 1.75rem 1.25rem;
+      background: var(--surface);
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .sb-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 1px; color: var(--accent); margin-bottom: 0.2rem; }
+    .sb-sub { font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .prog-row { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .prog-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 1.75rem; }
+    .prog-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.5s; }
+
+    .sb-cat { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 1.5rem 0 0.5rem 0.75rem; }
+    .sb-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.45rem 0.75rem; border-radius: 6px;
+      text-decoration: none; color: var(--muted);
+      font-size: 0.83rem; font-weight: 500;
+      margin-bottom: 0.1rem; transition: all 0.18s;
+    }
+    .sb-link:hover, .sb-link.active { background: var(--accent-glow); color: var(--accent); }
+    .sb-link .n { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--border); min-width: 18px; }
+    .sb-link.active .n { color: var(--accent); }
+
+    /* CONTENT */
+    .content { padding: 3.5rem 5rem 8rem; max-width: 900px; animation: fadeUp 0.5s ease both; }
+
+    .crumb { display: flex; gap: 0.5rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .crumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .crumb a:hover { color: var(--accent); }
+    .crumb span { opacity: 0.3; }
+
+    /* Hero */
+    .hero {
+      background: #111;
+      border: 1px solid rgba(247,223,30,0.15);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: 'JS';
+      position: absolute; right: 2rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 9rem; letter-spacing: -4px;
+      color: rgba(247,223,30,0.06);
+      line-height: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--accent); color: #000;
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.3rem 0.9rem; border-radius: 3px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 1px; line-height: 1; margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--muted); font-weight: 300; max-width: 460px; font-size: 1rem; }
+
+    /* Sections */
+    .lesson { margin-bottom: 4.5rem; }
+    .lesson-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .lesson-num {
+      background: var(--accent); color: #000;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.5px;
+      width: 38px; height: 38px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.5px; color: var(--text); }
+    h3 { font-size: 1rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text); letter-spacing: 0.02em; }
+    p { color: #aaa; margin-bottom: 1.2rem; font-weight: 300; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Code */
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .code-head { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 1.2rem; border-bottom: 1px solid var(--border); }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .dr { background: #ff5f57; } .dy { background: #ffbd2e; } .dg { background: #28ca41; }
+    .code-fname { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .copy-btn { font-size: 0.7rem; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'Space Grotesk', sans-serif; transition: color 0.2s; }
+    .copy-btn:hover { color: var(--accent); }
+    pre { padding: 1.5rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; line-height: 1.8; }
+    /* Syntax */
+    .kw { color: #ff79c6; }
+    .fn { color: #50fa7b; }
+    .str { color: #f7df1e; }
+    .num { color: #bd93f9; }
+    .cm { color: #444; font-style: italic; }
+    .op { color: #ff79c6; }
+    .var { color: #8be9fd; }
+    .bool { color: #ffb86c; }
+    code { font-family: 'JetBrains Mono', monospace; background: rgba(247,223,30,0.08); color: var(--accent); padding: 0.15rem 0.45rem; border-radius: 3px; font-size: 0.84em; }
+
+    /* Callouts */
+    .callout { border-radius: 10px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+    .tip { background: rgba(97,218,251,0.05); border: 1px solid rgba(97,218,251,0.2); }
+    .warn { background: rgba(255,184,108,0.05); border: 1px solid rgba(255,184,108,0.2); }
+    .note { background: rgba(247,223,30,0.05); border: 1px solid rgba(247,223,30,0.15); }
+    .ct { font-weight: 700; font-size: 0.83rem; margin-bottom: 0.4rem; }
+    .tip .ct { color: var(--accent2); }
+    .warn .ct { color: #ffb86c; }
+    .note .ct { color: var(--accent); }
+    .callout p { margin: 0; font-size: 0.9rem; color: #999; }
+
+    /* Table */
+    .js-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .js-table thead tr { background: rgba(247,223,30,0.08); }
+    .js-table th { padding: 0.85rem 1.2rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+    .js-table td { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: #aaa; }
+    .js-table tr:last-child td { border-bottom: none; }
+    .js-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .js-table .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 0.82rem; }
+
+    /* Mini Console */
+    .console-wrap {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .console-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.7rem 1.2rem;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+    }
+    .console-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+    .console-clear { font-size: 0.7rem; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'Space Grotesk', sans-serif; transition: color 0.2s; }
+    .console-clear:hover { color: #ff5f57; }
+    .console-output {
+      padding: 1rem 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem; line-height: 1.8;
+      min-height: 80px; max-height: 200px;
+      overflow-y: auto; color: var(--accent3);
+    }
+    .console-output .log { color: var(--accent3); }
+    .console-output .error { color: #ff5f57; }
+    .console-output .warn-out { color: #ffb86c; }
+    .console-input-row {
+      display: flex; align-items: center; gap: 0;
+      border-top: 1px solid var(--border);
+      padding: 0 1.2rem;
+    }
+    .console-prompt { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; margin-right: 0.5rem; user-select: none; }
+    .console-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
+      color: var(--text); padding: 0.75rem 0;
+      caret-color: var(--accent);
+    }
+    .console-run { background: var(--accent); color: #000; border: none; padding: 0.4rem 0.9rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.78rem; cursor: pointer; border-radius: 4px; transition: opacity 0.2s; margin: 0.4rem 0; }
+    .console-run:hover { opacity: 0.85; }
+
+    /* Live editor */
+    .live-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 1.5rem 0; }
+    .live-tabs { display: flex; border-bottom: 1px solid var(--border); background: #111; }
+    .live-tab { padding: 0.65rem 1.25rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .live-tab.active { color: var(--accent); border-color: var(--accent); }
+    .live-body { padding: 1.25rem; }
+    .live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .live-pane label { display: block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.5rem; }
+    textarea.editor {
+      width: 100%; min-height: 170px;
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      color: #f0f0f0; resize: vertical; outline: none; line-height: 1.7;
+      transition: border-color 0.2s;
+    }
+    textarea.editor:focus { border-color: var(--accent); }
+    .preview-frame-wrap { background: #fff; border-radius: 8px; overflow: hidden; min-height: 170px; }
+    iframe.pframe { width: 100%; min-height: 170px; border: none; }
+    .run-btn {
+      display: block; width: 100%;
+      background: var(--accent); color: #000;
+      border: none; padding: 0.85rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 1px;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .run-btn:hover { opacity: 0.85; }
+
+    /* Mini project card */
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .project-badge { display: inline-block; background: rgba(127,255,178,0.1); color: var(--accent3); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 3px; margin-bottom: 1rem; border: 1px solid rgba(127,255,178,0.2); }
+    .project-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+    .project-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.25rem; }
+    .project-demo { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+
+    /* Counter demo */
+    .counter-display { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; letter-spacing: -2px; color: var(--accent); text-align: center; line-height: 1; margin-bottom: 1rem; transition: all 0.15s; }
+    .counter-btns { display: flex; gap: 0.75rem; justify-content: center; }
+    .ctr-btn { background: #222; border: 1px solid var(--border); color: var(--text); padding: 0.65rem 1.5rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 1px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .ctr-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .ctr-btn.reset { color: var(--muted); }
+
+    /* Color changer demo */
+    .color-demo { text-align: center; }
+    .color-box { width: 100%; height: 80px; border-radius: 10px; background: #333; margin-bottom: 1rem; transition: background 0.4s ease; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+    .color-btn { background: var(--accent); color: #000; border: none; padding: 0.65rem 1.8rem; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 1px; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; }
+    .color-btn:hover { opacity: 0.85; }
+
+    /* Quiz */
+    .quiz-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 2.5rem; margin: 2rem 0; }
+    .quiz-hd { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .quiz-ic { width: 44px; height: 44px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .quiz-ttl { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.5px; }
+    .quiz-sub { font-size: 0.8rem; color: var(--muted); }
+    .q-item { margin-bottom: 2rem; }
+    .q-text { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.9rem; color: var(--text); }
+    .q-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+    .q-opt {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.7rem 1.1rem;
+      background: #111; border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer; transition: all 0.2s;
+      font-size: 0.88rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .q-opt:hover { border-color: rgba(247,223,30,0.3); }
+    .q-opt.correct { background: rgba(127,255,178,0.06); border-color: var(--accent3); color: var(--accent3); }
+    .q-opt.wrong { background: rgba(255,95,87,0.06); border-color: #ff5f57; color: #ff5f57; }
+    .q-opt input { accent-color: var(--accent); }
+    .quiz-submit {
+      background: var(--accent); color: #000;
+      border: none; padding: 0.9rem 2.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; letter-spacing: 1px;
+      border-radius: 6px; cursor: pointer;
+      box-shadow: 0 4px 25px rgba(247,223,30,0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 35px rgba(247,223,30,0.4); }
+    .quiz-res { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 10px; text-align: center; }
+    .quiz-res.show { display: block; }
+    .quiz-res.perfect { background: rgba(127,255,178,0.06); border: 1px solid rgba(127,255,178,0.25); }
+    .quiz-res.good { background: rgba(247,223,30,0.06); border: 1px solid rgba(247,223,30,0.2); }
+    .qr-em { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .qr-sc { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+    .perfect .qr-sc { color: var(--accent3); }
+    .good .qr-sc { color: var(--accent); }
+    .qr-msg { font-size: 0.88rem; color: var(--muted); }
+
+    /* Lesson nav */
+    .lesson-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .lnav { display: flex; flex-direction: column; padding: 1rem 1.5rem; border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--text); transition: border-color 0.2s; flex: 1; max-width: 240px; }
+    .lnav:hover { border-color: rgba(247,223,30,0.4); }
+    .lnav-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .lnav-title { font-weight: 600; font-size: 0.9rem; }
+    .lnav.next { text-align: right; margin-left: auto; }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 1px; }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .content { padding: 2rem 1.5rem 5rem; }
+      .live-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1.5rem 5%; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <nav>
+    <a href="index.html" class="logo">Nk<span>Tech</span>Vision</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="index.html#why">Why Us</a></li>
+      <li><a href="About_Me.html">About</a></li>
+      <li><a href="Contact_Us.html" class="nav-cta">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-brand">JavaScript</div>
+      <div class="sb-sub">Beginner · 13 Lessons</div>
+
+      <div class="prog-row"><span>Progress</span><span id="progPct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+
+      <div class="sb-cat">The Basics</div>
+      <a href="#what" class="sb-link active" onclick="setActive(this)"><span class="n">01</span> What is JavaScript?</a>
+      <a href="#variables" class="sb-link" onclick="setActive(this)"><span class="n">02</span> Variables</a>
+      <a href="#datatypes" class="sb-link" onclick="setActive(this)"><span class="n">03</span> Data Types</a>
+      <a href="#operators" class="sb-link" onclick="setActive(this)"><span class="n">04</span> Operators</a>
+      <a href="#conditionals" class="sb-link" onclick="setActive(this)"><span class="n">05</span> If / Else</a>
+      <a href="#loops" class="sb-link" onclick="setActive(this)"><span class="n">06</span> Loops</a>
+
+      <div class="sb-cat">Functions & Arrays</div>
+      <a href="#functions" class="sb-link" onclick="setActive(this)"><span class="n">07</span> Functions</a>
+      <a href="#arrays" class="sb-link" onclick="setActive(this)"><span class="n">08</span> Arrays</a>
+      <a href="#objects" class="sb-link" onclick="setActive(this)"><span class="n">09</span> Objects</a>
+
+      <div class="sb-cat">The DOM</div>
+      <a href="#dom" class="sb-link" onclick="setActive(this)"><span class="n">10</span> The DOM</a>
+      <a href="#events" class="sb-link" onclick="setActive(this)"><span class="n">11</span> Events</a>
+
+      <div class="sb-cat">Practice</div>
+      <a href="#projects" class="sb-link" onclick="setActive(this)"><span class="n">12</span> Mini Projects</a>
+      <a href="#quiz" class="sb-link" onclick="setActive(this)"><span class="n">13</span> Final Quiz</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <div class="crumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html#courses">Courses</a><span>/</span>
+        <span>JavaScript Tutorial</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-tag">⚡ Beginner · Free Course</div>
+        <h1>JavaScript — <em>Make It Move</em></h1>
+        <p>The language of the web. Learn to make pages interactive, respond to clicks, manipulate data, and build real mini apps — from zero.</p>
+      </div>
+
+      <!-- 1. WHAT IS JS -->
+      <section class="lesson" id="what">
+        <div class="lesson-head"><div class="lesson-num">1</div><h2>What is JavaScript?</h2></div>
+        <p>JavaScript (JS) is the programming language of the web. While <strong>HTML</strong> creates structure and <strong>CSS</strong> adds style, JavaScript makes pages <strong>interactive and dynamic</strong>.</p>
+        <p>Every time you click a button that opens a menu, submit a form without reloading the page, or see a live clock — that's JavaScript at work. It runs directly in the browser, no installation needed.</p>
+
+        <div class="callout note">
+          <div class="ct">⚡ Why JavaScript?</div>
+          <p>JavaScript is the only language that runs natively in every web browser. It's also used on servers (Node.js), in mobile apps, and even AI tools. Learning JS unlocks the entire web.</p>
+        </div>
+
+        <h3>Your First JavaScript</h3>
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">// This is a comment — ignored by the browser</span>
+
+<span class="cm">// Show a message in the browser console</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello, World!"</span>);
+
+<span class="cm">// Show a popup alert</span>
+<span class="fn">alert</span>(<span class="str">"Welcome to NkTechVision!"</span>);
+
+<span class="cm">// Add JavaScript to HTML using &lt;script&gt; tag</span>
+<span class="cm">// Best practice: put it just before &lt;/body&gt;</span></pre>
+        </div>
+
+        <h3>Try the Live Console</h3>
+        <p>Type any JavaScript expression below and press Run (or Enter) to see the result!</p>
+
+        <div class="console-wrap">
+          <div class="console-head">
+            <span class="console-title">▶ JavaScript Console</span>
+            <button class="console-clear" onclick="clearConsole()">Clear</button>
+          </div>
+          <div class="console-output" id="consoleOutput">
+            <div class="log">// Type JavaScript below and press Run or Enter</div>
+          </div>
+          <div class="console-input-row">
+            <span class="console-prompt">›</span>
+            <input type="text" class="console-input" id="consoleInput" placeholder='console.log("Hello!")' onkeydown="if(event.key==='Enter')runConsole()"/>
+            <button class="console-run" onclick="runConsole()">Run</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. VARIABLES -->
+      <section class="lesson reveal" id="variables">
+        <div class="lesson-head"><div class="lesson-num">2</div><h2>Variables</h2></div>
+        <p>A <strong>variable</strong> is a named container that stores a value. Think of it like a labelled box — you put something in it and refer to it by name later.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">// let — can be changed later (use this most often)</span>
+<span class="kw">let</span> <span class="var">name</span> <span class="op">=</span> <span class="str">"Kishor"</span>;
+<span class="kw">let</span> <span class="var">age</span> <span class="op">=</span> <span class="num">25</span>;
+
+<span class="cm">// const — cannot be changed (use for fixed values)</span>
+<span class="kw">const</span> <span class="var">siteName</span> <span class="op">=</span> <span class="str">"NkTechVision"</span>;
+<span class="kw">const</span> <span class="var">pi</span> <span class="op">=</span> <span class="num">3.14159</span>;
+
+<span class="cm">// var — old style, avoid in modern JS</span>
+<span class="kw">var</span> <span class="var">oldWay</span> <span class="op">=</span> <span class="str">"Don't use this"</span>;
+
+<span class="cm">// Using variables</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">name</span>);        <span class="cm">// Kishor</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">age</span> <span class="op">+</span> <span class="num">1</span>);     <span class="cm">// 26</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello, "</span> <span class="op">+</span> <span class="var">name</span>); <span class="cm">// Hello, Kishor</span></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ct">💡 let vs const — Quick Rule</div>
+          <p>Default to <code>const</code>. If you need to reassign the value later (like a counter or user input), use <code>let</code>. Never use <code>var</code> in modern JavaScript.</p>
+        </div>
+      </section>
+
+      <!-- 3. DATA TYPES -->
+      <section class="lesson reveal" id="datatypes">
+        <div class="lesson-head"><div class="lesson-num">3</div><h2>Data Types</h2></div>
+        <p>JavaScript has several types of data. Knowing which type you're working with helps you avoid bugs.</p>
+
+        <table class="js-table">
+          <thead><tr><th>Type</th><th>Example</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mono">String</span></td><td><code>"Hello"</code>, <code>'World'</code></td><td>Text, always in quotes</td></tr>
+            <tr><td><span class="mono">Number</span></td><td><code>42</code>, <code>3.14</code>, <code>-7</code></td><td>Any number, integer or decimal</td></tr>
+            <tr><td><span class="mono">Boolean</span></td><td><code>true</code>, <code>false</code></td><td>Yes/No, on/off values</td></tr>
+            <tr><td><span class="mono">Array</span></td><td><code>[1, 2, 3]</code></td><td>A list of values</td></tr>
+            <tr><td><span class="mono">Object</span></td><td><code>{name: "Kishor"}</code></td><td>Key-value pairs</td></tr>
+            <tr><td><span class="mono">null</span></td><td><code>null</code></td><td>Intentionally empty value</td></tr>
+            <tr><td><span class="mono">undefined</span></td><td><code>undefined</code></td><td>Variable declared but not assigned</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">let</span> <span class="var">greeting</span> <span class="op">=</span> <span class="str">"Hello!"</span>;           <span class="cm">// String</span>
+<span class="kw">let</span> <span class="var">score</span> <span class="op">=</span> <span class="num">100</span>;                  <span class="cm">// Number</span>
+<span class="kw">let</span> <span class="var">isLoggedIn</span> <span class="op">=</span> <span class="bool">true</span>;           <span class="cm">// Boolean</span>
+<span class="kw">let</span> <span class="var">nothing</span> <span class="op">=</span> <span class="bool">null</span>;              <span class="cm">// Null</span>
+
+<span class="cm">// Check the type of a variable</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">greeting</span>);   <span class="cm">// "string"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">score</span>);      <span class="cm">// "number"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">isLoggedIn</span>); <span class="cm">// "boolean"</span>
+
+<span class="cm">// Template literals — modern way to combine strings</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Hello, my score is <span class="op">${</span><span class="var">score</span><span class="op">}</span>!`</span>); <span class="cm">// Hello, my score is 100!</span></pre>
+        </div>
+      </section>
+
+      <!-- 4. OPERATORS -->
+      <section class="lesson reveal" id="operators">
+        <div class="lesson-head"><div class="lesson-num">4</div><h2>Operators</h2></div>
+
+        <table class="js-table">
+          <thead><tr><th>Type</th><th>Operators</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Arithmetic</td><td><code>+ - * / % **</code></td><td><code>10 % 3 = 1</code></td></tr>
+            <tr><td>Assignment</td><td><code>= += -= *= /=</code></td><td><code>x += 5</code> (same as x = x + 5)</td></tr>
+            <tr><td>Comparison</td><td><code>=== !== > < >= <=</code></td><td><code>5 === "5"</code> → false</td></tr>
+            <tr><td>Logical</td><td><code>&& || !</code></td><td><code>true && false</code> → false</td></tr>
+            <tr><td>Increment</td><td><code>++ --</code></td><td><code>x++</code> adds 1 to x</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout warn">
+          <div class="ct">⚠️ === vs == (Always use ===)</div>
+          <p><code>==</code> checks value only: <code>5 == "5"</code> is <code>true</code>. <code>===</code> checks value AND type: <code>5 === "5"</code> is <code>false</code>. Always use <code>===</code> to avoid bugs.</p>
+        </div>
+      </section>
+
+      <!-- 5. CONDITIONALS -->
+      <section class="lesson reveal" id="conditionals">
+        <div class="lesson-head"><div class="lesson-num">5</div><h2>If / Else Statements</h2></div>
+        <p>Conditionals let your code make decisions — run one block if something is true, and a different block if it's false.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">let</span> <span class="var">score</span> <span class="op">=</span> <span class="num">75</span>;
+
+<span class="kw">if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">90</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade: A"</span>);
+} <span class="kw">else if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">70</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade: B"</span>);   <span class="cm">// This runs</span>
+} <span class="kw">else if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">50</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Grade: C"</span>);
+} <span class="kw">else</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Failed"</span>);
+}
+
+<span class="cm">// Ternary operator — short if/else in one line</span>
+<span class="kw">let</span> <span class="var">result</span> <span class="op">=</span> <span class="var">score</span> <span class="op">>=</span> <span class="num">50</span> <span class="op">?</span> <span class="str">"Pass"</span> <span class="op">:</span> <span class="str">"Fail"</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">result</span>);  <span class="cm">// Pass</span></pre>
+        </div>
+      </section>
+
+      <!-- 6. LOOPS -->
+      <section class="lesson reveal" id="loops">
+        <div class="lesson-head"><div class="lesson-num">6</div><h2>Loops</h2></div>
+        <p>Loops repeat a block of code multiple times — great for processing lists, counting, or doing repetitive tasks.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">// FOR loop — when you know how many times to repeat</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>; <span class="var">i</span> <span class="op">&lt;=</span> <span class="num">5</span>; <span class="var">i</span><span class="op">++</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Count: <span class="op">${</span><span class="var">i</span><span class="op">}</span>`</span>);
+}
+<span class="cm">// Count: 1, Count: 2, ... Count: 5</span>
+
+<span class="cm">// WHILE loop — repeat while condition is true</span>
+<span class="kw">let</span> <span class="var">n</span> <span class="op">=</span> <span class="num">0</span>;
+<span class="kw">while</span> (<span class="var">n</span> <span class="op">&lt;</span> <span class="num">3</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"n = "</span> <span class="op">+</span> <span class="var">n</span>);
+  <span class="var">n</span><span class="op">++</span>;
+}
+
+<span class="cm">// FOR...OF — loop through an array easily</span>
+<span class="kw">const</span> <span class="var">fruits</span> <span class="op">=</span> [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"mango"</span>];
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">fruit</span> <span class="kw">of</span> <span class="var">fruits</span>) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="var">fruit</span>);
+}</pre>
+        </div>
+      </section>
+
+      <!-- 7. FUNCTIONS -->
+      <section class="lesson reveal" id="functions">
+        <div class="lesson-head"><div class="lesson-num">7</div><h2>Functions</h2></div>
+        <p>A <strong>function</strong> is a reusable block of code. Write it once, run it anywhere. Functions are the building blocks of every JavaScript program.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">// Function declaration</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">name</span>) {
+  <span class="kw">return</span> <span class="str">`Hello, <span class="op">${</span><span class="var">name</span><span class="op">}</span>! Welcome to NkTechVision.`</span>;
+}
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">"Kishor"</span>));  <span class="cm">// Hello, Kishor! Welcome...</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">"Student"</span>)); <span class="cm">// Hello, Student! Welcome...</span>
+
+<span class="cm">// Arrow function — modern, shorter syntax</span>
+<span class="kw">const</span> <span class="fn">add</span> <span class="op">=</span> (<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">add</span>(<span class="num">5</span>, <span class="num">3</span>));  <span class="cm">// 8</span>
+
+<span class="cm">// Function with default parameter</span>
+<span class="kw">const</span> <span class="fn">power</span> <span class="op">=</span> (<span class="var">base</span>, <span class="var">exp</span> <span class="op">=</span> <span class="num">2</span>) <span class="op">=></span> <span class="var">base</span> <span class="op">**</span> <span class="var">exp</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">power</span>(<span class="num">4</span>));     <span class="cm">// 16  (4²)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">power</span>(<span class="num">2</span>, <span class="num">10</span>)); <span class="cm">// 1024 (2¹⁰)</span></pre>
+        </div>
+      </section>
+
+      <!-- 8. ARRAYS -->
+      <section class="lesson reveal" id="arrays">
+        <div class="lesson-head"><div class="lesson-num">8</div><h2>Arrays</h2></div>
+        <p>An <strong>array</strong> is an ordered list of values. Arrays are one of the most useful structures in JavaScript.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">const</span> <span class="var">courses</span> <span class="op">=</span> [<span class="str">"HTML"</span>, <span class="str">"CSS"</span>, <span class="str">"JavaScript"</span>, <span class="str">"Python"</span>];
+
+<span class="cm">// Access by index (starts at 0)</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">courses</span>[<span class="num">0</span>]);  <span class="cm">// "HTML"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">courses</span>[<span class="num">2</span>]);  <span class="cm">// "JavaScript"</span>
+
+<span class="cm">// Common array methods</span>
+<span class="var">courses</span>.<span class="fn">push</span>(<span class="str">"Java"</span>);       <span class="cm">// Add to end</span>
+<span class="var">courses</span>.<span class="fn">pop</span>();              <span class="cm">// Remove from end</span>
+<span class="var">courses</span>.<span class="fn">unshift</span>(<span class="str">"English"</span>); <span class="cm">// Add to start</span>
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">courses</span>.<span class="var">length</span>);  <span class="cm">// Number of items</span>
+
+<span class="cm">// Powerful array methods</span>
+<span class="kw">const</span> <span class="var">nums</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cm">// map — transform each item</span>
+<span class="kw">const</span> <span class="var">doubled</span> <span class="op">=</span> <span class="var">nums</span>.<span class="fn">map</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">*</span> <span class="num">2</span>);  <span class="cm">// [2,4,6,8,10]</span>
+
+<span class="cm">// filter — keep only matching items</span>
+<span class="kw">const</span> <span class="var">evens</span> <span class="op">=</span> <span class="var">nums</span>.<span class="fn">filter</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>); <span class="cm">// [2,4]</span>
+
+<span class="cm">// find — first item that matches</span>
+<span class="kw">const</span> <span class="var">big</span> <span class="op">=</span> <span class="var">nums</span>.<span class="fn">find</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">></span> <span class="num">3</span>);  <span class="cm">// 4</span></pre>
+        </div>
+      </section>
+
+      <!-- 9. OBJECTS -->
+      <section class="lesson reveal" id="objects">
+        <div class="lesson-head"><div class="lesson-num">9</div><h2>Objects</h2></div>
+        <p>An <strong>object</strong> groups related data together using <strong>key: value</strong> pairs. Perfect for representing real-world things like a user, a product, or a course.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">const</span> <span class="var">student</span> <span class="op">=</span> {
+  <span class="var">name</span>: <span class="str">"Kishor"</span>,
+  <span class="var">age</span>: <span class="num">25</span>,
+  <span class="var">courses</span>: [<span class="str">"HTML"</span>, <span class="str">"CSS"</span>, <span class="str">"JavaScript"</span>],
+  <span class="var">isEnrolled</span>: <span class="bool">true</span>,
+  <span class="cm">// Functions inside objects are called methods</span>
+  <span class="fn">greet</span>: <span class="kw">function</span>() {
+    <span class="kw">return</span> <span class="str">`Hi, I'm <span class="op">${</span><span class="kw">this</span>.<span class="var">name</span><span class="op">}</span>!`</span>;
+  }
+};
+
+<span class="cm">// Access properties</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">student</span>.<span class="var">name</span>);       <span class="cm">// "Kishor"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">student</span>[<span class="str">"age"</span>]);    <span class="cm">// 25</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">student</span>.<span class="fn">greet</span>());   <span class="cm">// "Hi, I'm Kishor!"</span>
+
+<span class="cm">// Add or update a property</span>
+<span class="var">student</span>.<span class="var">city</span> <span class="op">=</span> <span class="str">"Mumbai"</span>;
+
+<span class="cm">// Destructuring — extract into variables</span>
+<span class="kw">const</span> { <span class="var">name</span>, <span class="var">age</span> } <span class="op">=</span> <span class="var">student</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">name</span>, <span class="var">age</span>); <span class="cm">// Kishor 25</span></pre>
+        </div>
+      </section>
+
+      <!-- 10. DOM -->
+      <section class="lesson reveal" id="dom">
+        <div class="lesson-head"><div class="lesson-num">10</div><h2>The DOM</h2></div>
+        <p>The <strong>DOM (Document Object Model)</strong> is how JavaScript sees and interacts with your HTML page. Using the DOM you can read, change, add, and remove HTML elements with JavaScript.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">// SELECT elements</span>
+<span class="kw">const</span> <span class="var">title</span> <span class="op">=</span> document.<span class="fn">getElementById</span>(<span class="str">"title"</span>);
+<span class="kw">const</span> <span class="var">btn</span> <span class="op">=</span> document.<span class="fn">querySelector</span>(<span class="str">".btn"</span>);      <span class="cm">// first .btn</span>
+<span class="kw">const</span> <span class="var">all</span> <span class="op">=</span> document.<span class="fn">querySelectorAll</span>(<span class="str">"p"</span>);       <span class="cm">// all &lt;p&gt; tags</span>
+
+<span class="cm">// CHANGE content</span>
+<span class="var">title</span>.<span class="var">textContent</span> <span class="op">=</span> <span class="str">"New Title!"</span>;
+<span class="var">title</span>.<span class="var">innerHTML</span> <span class="op">=</span> <span class="str">"&lt;strong&gt;Bold Title&lt;/strong&gt;"</span>;
+
+<span class="cm">// CHANGE styles</span>
+<span class="var">title</span>.<span class="var">style</span>.<span class="var">color</span> <span class="op">=</span> <span class="str">"gold"</span>;
+<span class="var">title</span>.<span class="var">style</span>.<span class="var">fontSize</span> <span class="op">=</span> <span class="str">"2rem"</span>;
+
+<span class="cm">// ADD/REMOVE CSS classes</span>
+<span class="var">btn</span>.<span class="var">classList</span>.<span class="fn">add</span>(<span class="str">"active"</span>);
+<span class="var">btn</span>.<span class="var">classList</span>.<span class="fn">remove</span>(<span class="str">"hidden"</span>);
+<span class="var">btn</span>.<span class="var">classList</span>.<span class="fn">toggle</span>(<span class="str">"dark"</span>);  <span class="cm">// adds if missing, removes if present</span>
+
+<span class="cm">// CREATE new elements</span>
+<span class="kw">const</span> <span class="var">newPara</span> <span class="op">=</span> document.<span class="fn">createElement</span>(<span class="str">"p"</span>);
+<span class="var">newPara</span>.<span class="var">textContent</span> <span class="op">=</span> <span class="str">"I was added by JavaScript!"</span>;
+document.<span class="var">body</span>.<span class="fn">appendChild</span>(<span class="var">newPara</span>);</pre>
+        </div>
+      </section>
+
+      <!-- 11. EVENTS -->
+      <section class="lesson reveal" id="events">
+        <div class="lesson-head"><div class="lesson-num">11</div><h2>Events</h2></div>
+        <p>Events are things that happen in the browser — a user clicks, types, scrolls, or moves their mouse. JavaScript can <strong>listen</strong> for these events and react to them.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">script.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="kw">const</span> <span class="var">btn</span> <span class="op">=</span> document.<span class="fn">querySelector</span>(<span class="str">"#myButton"</span>);
+
+<span class="cm">// addEventListener(event, function)</span>
+<span class="var">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>() {
+  <span class="fn">alert</span>(<span class="str">"Button clicked!"</span>);
+});
+
+<span class="cm">// Common events</span>
+<span class="var">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseover"</span>, () <span class="op">=></span> { <span class="cm">/* hover */</span> });
+<span class="var">btn</span>.<span class="fn">addEventListener</span>(<span class="str">"mouseout"</span>,  () <span class="op">=></span> { <span class="cm">/* leave */</span> });
+
+<span class="kw">const</span> <span class="var">input</span> <span class="op">=</span> document.<span class="fn">querySelector</span>(<span class="str">"input"</span>);
+<span class="var">input</span>.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, (<span class="var">e</span>) <span class="op">=></span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"You typed: "</span> <span class="op">+</span> <span class="var">e</span>.<span class="var">target</span>.<span class="var">value</span>);
+});
+
+document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, (<span class="var">e</span>) <span class="op">=></span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Key pressed: "</span> <span class="op">+</span> <span class="var">e</span>.<span class="var">key</span>);
+});</pre>
+        </div>
+
+        <h3>Live DOM + Events Editor</h3>
+        <div class="live-wrap">
+          <div class="live-tabs"><div class="live-tab active">Live Editor</div></div>
+          <div class="live-body">
+            <div class="live-grid">
+              <div class="live-pane">
+                <label>✏️ JavaScript (+ HTML)</label>
+                <textarea class="editor" id="jsEditor" spellcheck="false">&lt;style&gt;
+  body { font-family: sans-serif; padding: 20px; background: #111; color: #fff; }
+  button { background: #f7df1e; color: #000; border: none;
+    padding: 10px 24px; border-radius: 6px;
+    font-weight: bold; font-size: 15px; cursor: pointer; margin: 6px; }
+  #output { margin-top: 16px; font-size: 18px;
+    padding: 14px; background: #222;
+    border-radius: 8px; min-height: 50px; }
+&lt;/style&gt;
+
+&lt;button onclick="changeText()"&gt;Change Text&lt;/button&gt;
+&lt;button onclick="changeColor()"&gt;Change Color&lt;/button&gt;
+&lt;div id="output"&gt;Click a button!&lt;/div&gt;
+
+&lt;script&gt;
+  let colors = ["#f7df1e","#61dafb","#7fffb2","#ff79c6"];
+  let ci = 0;
+  function changeText() {
+    document.getElementById("output").textContent =
+      "JavaScript is awesome! 🚀";
+  }
+  function changeColor() {
+    ci = (ci + 1) % colors.length;
+    document.getElementById("output").style.color = colors[ci];
+  }
+&lt;/script&gt;</textarea>
+              </div>
+              <div class="live-pane">
+                <label>👁️ Live Preview</label>
+                <div class="preview-frame-wrap">
+                  <iframe class="pframe" id="jsPreview"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="run-btn" onclick="runJS()">▶ RUN CODE</button>
+        </div>
+      </section>
+
+      <!-- 12. MINI PROJECTS -->
+      <section class="lesson reveal" id="projects">
+        <div class="lesson-head"><div class="lesson-num">12</div><h2>Mini Projects</h2></div>
+        <p>The best way to learn JavaScript is to <strong>build things</strong>. Here are two working mini projects — study the code, then try modifying them!</p>
+
+        <!-- Counter -->
+        <div class="project-card">
+          <div class="project-badge">🔢 Project 1</div>
+          <div class="project-title">Click Counter</div>
+          <p class="project-desc">A counter with increment, decrement, and reset buttons — uses variables, DOM, and event listeners.</p>
+          <div class="project-demo">
+            <div class="counter-display" id="counterDisplay">0</div>
+            <div class="counter-btns">
+              <button class="ctr-btn" onclick="updateCounter(-1)">− Decrease</button>
+              <button class="ctr-btn reset" onclick="updateCounter(0, true)">Reset</button>
+              <button class="ctr-btn" onclick="updateCounter(1)">+ Increase</button>
+            </div>
+          </div>
+          <div class="code-block" style="margin-top:1.25rem">
+            <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">counter.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="kw">let</span> <span class="var">count</span> <span class="op">=</span> <span class="num">0</span>;
+
+<span class="kw">function</span> <span class="fn">updateCounter</span>(<span class="var">change</span>, <span class="var">reset</span> <span class="op">=</span> <span class="bool">false</span>) {
+  <span class="kw">if</span> (<span class="var">reset</span>) { <span class="var">count</span> <span class="op">=</span> <span class="num">0</span>; }
+  <span class="kw">else</span> { <span class="var">count</span> <span class="op">+=</span> <span class="var">change</span>; }
+
+  <span class="kw">const</span> <span class="var">display</span> <span class="op">=</span> document.<span class="fn">getElementById</span>(<span class="str">"counterDisplay"</span>);
+  <span class="var">display</span>.<span class="var">textContent</span> <span class="op">=</span> <span class="var">count</span>;
+  <span class="var">display</span>.<span class="var">style</span>.<span class="var">color</span> <span class="op">=</span> <span class="var">count</span> <span class="op">></span> <span class="num">0</span> <span class="op">?</span> <span class="str">"#7fffb2"</span>
+                       <span class="op">:</span> <span class="var">count</span> <span class="op">&lt;</span> <span class="num">0</span> <span class="op">?</span> <span class="str">"#ff5f57"</span>
+                       <span class="op">:</span> <span class="str">"#f7df1e"</span>;
+}</pre>
+          </div>
+        </div>
+
+        <!-- Color changer -->
+        <div class="project-card">
+          <div class="project-badge">🎨 Project 2</div>
+          <div class="project-title">Random Color Generator</div>
+          <p class="project-desc">Click the button to generate a random hex color — uses Math.random() and DOM manipulation.</p>
+          <div class="project-demo">
+            <div class="color-demo">
+              <div class="color-box" id="colorBox">#333333</div>
+              <button class="color-btn" onclick="randomColor()">Generate Color</button>
+            </div>
+          </div>
+          <div class="code-block" style="margin-top:1.25rem">
+            <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-fname">color.js</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="kw">function</span> <span class="fn">randomColor</span>() {
+  <span class="cm">// Generate random hex like #a3f2b1</span>
+  <span class="kw">const</span> <span class="var">hex</span> <span class="op">=</span> <span class="str">"#"</span> <span class="op">+</span> Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() <span class="op">*</span> <span class="num">0xFFFFFF</span>)
+    .<span class="fn">toString</span>(<span class="num">16</span>)
+    .<span class="fn">padStart</span>(<span class="num">6</span>, <span class="str">"0"</span>);
+
+  <span class="kw">const</span> <span class="var">box</span> <span class="op">=</span> document.<span class="fn">getElementById</span>(<span class="str">"colorBox"</span>);
+  <span class="var">box</span>.<span class="var">style</span>.<span class="var">background</span> <span class="op">=</span> <span class="var">hex</span>;
+  <span class="var">box</span>.<span class="var">textContent</span> <span class="op">=</span> <span class="var">hex</span>;
+
+  <span class="cm">// Auto-pick text color for readability</span>
+  <span class="kw">const</span> <span class="var">r</span> <span class="op">=</span> <span class="fn">parseInt</span>(<span class="var">hex</span>.<span class="fn">slice</span>(<span class="num">1</span>,<span class="num">3</span>), <span class="num">16</span>);
+  <span class="kw">const</span> <span class="var">g</span> <span class="op">=</span> <span class="fn">parseInt</span>(<span class="var">hex</span>.<span class="fn">slice</span>(<span class="num">3</span>,<span class="num">5</span>), <span class="num">16</span>);
+  <span class="kw">const</span> <span class="var">b</span> <span class="op">=</span> <span class="fn">parseInt</span>(<span class="var">hex</span>.<span class="fn">slice</span>(<span class="num">5</span>,<span class="num">7</span>), <span class="num">16</span>);
+  <span class="kw">const</span> <span class="var">brightness</span> <span class="op">=</span> (<span class="var">r</span> <span class="op">*</span> <span class="num">299</span> <span class="op">+</span> <span class="var">g</span> <span class="op">*</span> <span class="num">587</span> <span class="op">+</span> <span class="var">b</span> <span class="op">*</span> <span class="num">114</span>) <span class="op">/</span> <span class="num">1000</span>;
+  <span class="var">box</span>.<span class="var">style</span>.<span class="var">color</span> <span class="op">=</span> <span class="var">brightness</span> <span class="op">></span> <span class="num">128</span> <span class="op">?</span> <span class="str">"#000"</span> <span class="op">:</span> <span class="str">"#fff"</span>;
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. QUIZ -->
+      <section class="lesson reveal" id="quiz">
+        <div class="quiz-wrap">
+          <div class="quiz-hd">
+            <div class="quiz-ic">🧪</div>
+            <div>
+              <div class="quiz-ttl">JavaScript Final Quiz</div>
+              <div class="quiz-sub">5 questions · Prove your JS knowledge</div>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">1. Which keyword declares a variable that cannot be reassigned?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q1" value="a"> var</label>
+              <label class="q-opt"><input type="radio" name="q1" value="b"> let</label>
+              <label class="q-opt"><input type="radio" name="q1" value="c"> const</label>
+              <label class="q-opt"><input type="radio" name="q1" value="d"> static</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">2. What does <code>console.log(typeof 42)</code> output?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q2" value="a"> "integer"</label>
+              <label class="q-opt"><input type="radio" name="q2" value="b"> "number"</label>
+              <label class="q-opt"><input type="radio" name="q2" value="c"> "string"</label>
+              <label class="q-opt"><input type="radio" name="q2" value="d"> 42</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">3. Which method adds an item to the END of an array?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q3" value="a"> .unshift()</label>
+              <label class="q-opt"><input type="radio" name="q3" value="b"> .add()</label>
+              <label class="q-opt"><input type="radio" name="q3" value="c"> .append()</label>
+              <label class="q-opt"><input type="radio" name="q3" value="d"> .push()</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">4. What does <code>===</code> check that <code>==</code> does NOT?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q4" value="a"> Value only</label>
+              <label class="q-opt"><input type="radio" name="q4" value="b"> Type only</label>
+              <label class="q-opt"><input type="radio" name="q4" value="c"> Both value AND type</label>
+              <label class="q-opt"><input type="radio" name="q4" value="d"> Length of the variable</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">5. Which method is used to listen for a click on a button?</div>
+            <div class="q-opts">
+              <label class="q-opt"><input type="radio" name="q5" value="a"> .onClick()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="b"> .addEventListener()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="c"> .listenFor()</label>
+              <label class="q-opt"><input type="radio" name="q5" value="d"> .onEvent()</label>
+            </div>
+          </div>
+
+          <button class="quiz-submit" onclick="runQuiz()">Submit Answers</button>
+
+          <div class="quiz-res" id="quizRes">
+            <div class="qr-em" id="qrE"></div>
+            <div class="qr-sc" id="qrS"></div>
+            <div class="qr-msg" id="qrM"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-nav">
+        <a href="css_tutorial.html" class="lnav">
+          <span class="lnav-lbl">← Previous</span>
+          <span class="lnav-title">CSS Tutorial</span>
+        </a>
+        <a href="https://www.tpointtech.com/python-tutorial" target="_blank" class="lnav next">
+          <span class="lnav-lbl">Next Course →</span>
+          <span class="lnav-title">Python Tutorial</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Nk<span>Tech</span>Vision</div>
+    <p class="footer-copy">© 2025 NkTechVision. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="About_Me.html">About</a>
+      <a href="Contact_Us.html">Contact</a>
+      <a href="index.html#courses">Courses</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    // Sidebar + progress
+    function setActive(el) {
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+      updateProg();
+    }
+    function updateProg() {
+      const links = document.querySelectorAll('.sb-link');
+      const active = document.querySelector('.sb-link.active');
+      const idx = Array.from(links).indexOf(active) + 1;
+      const pct = Math.round((idx / links.length) * 100);
+      document.getElementById('progFill').style.width = pct + '%';
+      document.getElementById('progPct').textContent = pct + '%';
+    }
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+      updateProg();
+    });
+
+    // Mini console
+    function runConsole() {
+      const input = document.getElementById('consoleInput');
+      const output = document.getElementById('consoleOutput');
+      const code = input.value.trim();
+      if (!code) return;
+
+      const line = document.createElement('div');
+      line.className = 'log';
+      line.textContent = '› ' + code;
+      output.appendChild(line);
+
+      const result = document.createElement('div');
+      try {
+        const origLog = console.log;
+        let logged = [];
+        console.log = (...args) => logged.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' '));
+        const val = eval(code);
+        console.log = origLog;
+        if (logged.length) {
+          logged.forEach(l => {
+            const d = document.createElement('div');
+            d.className = 'log'; d.textContent = '← ' + l;
+            output.appendChild(d);
+          });
+        } else if (val !== undefined) {
+          result.className = 'log';
+          result.textContent = '← ' + (typeof val === 'object' ? JSON.stringify(val) : String(val));
+          output.appendChild(result);
+        }
+      } catch(e) {
+        result.className = 'error';
+        result.textContent = '✗ ' + e.message;
+        output.appendChild(result);
+      }
+      input.value = '';
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function clearConsole() {
+      document.getElementById('consoleOutput').innerHTML = '<div class="log">// Console cleared</div>';
+    }
+
+    // Counter project
+    let count = 0;
+    function updateCounter(change, reset = false) {
+      if (reset) count = 0;
+      else count += change;
+      const d = document.getElementById('counterDisplay');
+      d.textContent = count;
+      d.style.color = count > 0 ? '#7fffb2' : count < 0 ? '#ff5f57' : '#f7df1e';
+    }
+
+    // Color generator project
+    function randomColor() {
+      const hex = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
+      const box = document.getElementById('colorBox');
+      box.style.background = hex;
+      box.textContent = hex;
+      const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+      box.style.color = (r*299+g*587+b*114)/1000 > 128 ? '#000' : '#fff';
+    }
+
+    // Live JS editor
+    function runJS() {
+      const code = document.getElementById('jsEditor').value;
+      document.getElementById('jsPreview').srcdoc = code;
+    }
+    runJS();
+
+    // Copy buttons
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Quiz
+    const answers = { q1:'c', q2:'b', q3:'d', q4:'c', q5:'b' };
+    function runQuiz() {
+      let score = 0;
+      Object.keys(answers).forEach(q => {
+        const sel = document.querySelector(`input[name="${q}"]:checked`);
+        document.querySelectorAll(`input[name="${q}"]`).forEach(o => {
+          const lbl = o.closest('.q-opt');
+          lbl.classList.remove('correct','wrong');
+          if (o.value === answers[q]) lbl.classList.add('correct');
+          else if (sel && o.value === sel.value) lbl.classList.add('wrong');
+          o.disabled = true;
+        });
+        if (sel && sel.value === answers[q]) score++;
+      });
+      const box = document.getElementById('quizRes');
+      box.classList.add('show');
+      if (score === 5) {
+        box.className = 'quiz-res show perfect';
+        document.getElementById('qrE').textContent = '🏆';
+        document.getElementById('qrS').textContent = '5 / 5 — PERFECT!';
+        document.getElementById('qrM').textContent = 'Outstanding! You\'re ready for Python. Keep building!';
+      } else {
+        box.className = 'quiz-res show good';
+        document.getElementById('qrE').textContent = score >= 3 ? '👍' : '📖';
+        document.getElementById('qrS').textContent = `${score} / 5`;
+        document.getElementById('qrM').textContent = score >= 3 ? 'Great work! Review the highlighted answers and try again.' : 'Go back through the lessons and try the quiz again. You\'ve got this!';
+      }
+    }
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+    }), { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    updateProg();
+  </script>
+</body>
+</html>
