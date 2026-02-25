@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learn CSS from scratch – free beginner tutorial covering selectors, colors, layouts, flexbox, animations and more by NkTechVision."/>
+  <title>CSS Tutorial – NkTechVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,800;0,900;1,700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0e0b16;
+      --surface: #16121f;
+      --border: rgba(255,255,255,0.07);
+      --accent: #a855f7;
+      --accent-glow: rgba(168,85,247,0.2);
+      --accent2: #38bdf8;
+      --accent3: #34d399;
+      --accent4: #fb923c;
+      --text: #ede9f6;
+      --muted: #8b7fa8;
+      --card: #1a1528;
+      --code-bg: #0a0812;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    /* Animated gradient mesh background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(168,85,247,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(56,189,248,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(52,211,153,0.03) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(14,11,22,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Fraunces', serif; font-weight: 900; font-size: 1.35rem; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent) !important; color: #fff !important; padding: 0.45rem 1.1rem !important; border-radius: 100px !important; font-weight: 600 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* ── LAYOUT ── */
+    .tutorial-layout {
+      display: grid;
+      grid-template-columns: 265px 1fr;
+      min-height: 100vh;
+      padding-top: 65px;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky; top: 65px;
+      height: calc(100vh - 65px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.25rem;
+      background: var(--surface);
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .sidebar-logo { font-family: 'Fraunces', serif; font-weight: 800; font-size: 0.95rem; color: var(--text); margin-bottom: 0.25rem; }
+    .sidebar-tag { font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+    .prog-label { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.4rem; }
+    .prog-bar { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-bottom: 1.5rem; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; width: 0%; transition: width 0.5s; }
+
+    .sb-section { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 1.5rem 0 0.5rem; padding-left: 0.75rem; }
+    .sb-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.75rem; border-radius: 8px;
+      text-decoration: none; color: var(--muted);
+      font-size: 0.84rem; font-weight: 500;
+      margin-bottom: 0.15rem; transition: all 0.2s;
+    }
+    .sb-link:hover, .sb-link.active { background: rgba(168,85,247,0.1); color: var(--accent); }
+    .sb-link .n { font-size: 0.68rem; font-weight: 700; color: var(--border); min-width: 14px; font-family: 'JetBrains Mono', monospace; }
+    .sb-link.active .n { color: var(--accent); }
+
+    /* ── MAIN CONTENT ── */
+    .content { padding: 3.5rem 5rem 8rem; max-width: 880px; animation: fadeIn 0.5s ease both; }
+
+    .breadcrumb { display: flex; gap: 0.5rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { opacity: 0.3; }
+
+    /* Hero */
+    .hero-banner {
+      background: linear-gradient(135deg, #2d1b69 0%, #1a0e3d 40%, #0e1a3d 100%);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 22px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(168,85,247,0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .hero-banner::after {
+      content: '{ }';
+      position: absolute; right: 2.5rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6rem; font-weight: 500;
+      color: rgba(168,85,247,0.12);
+      line-height: 1;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(168,85,247,0.15);
+      border: 1px solid rgba(168,85,247,0.3);
+      color: var(--accent);
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.3rem 0.9rem; border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    .hero-banner h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -1px; margin-bottom: 0.75rem;
+    }
+    .hero-banner p { color: rgba(237,233,246,0.7); font-weight: 300; max-width: 460px; font-size: 1rem; }
+
+    /* Section styles */
+    .lesson { margin-bottom: 4.5rem; }
+    .lesson-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .lesson-num {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-weight: 800; font-size: 1rem;
+      flex-shrink: 0; color: #fff;
+      box-shadow: 0 4px 20px rgba(168,85,247,0.3);
+    }
+    h2 { font-family: 'Fraunces', serif; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px; }
+    h3 { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text); }
+    p { color: #c4bdd8; margin-bottom: 1.2rem; font-weight: 300; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Code blocks */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .code-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.7rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .dr { background: #ff5f57; } .dy { background: #ffbd2e; } .dg { background: #28ca41; }
+    .code-filename { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+    .copy-btn { font-size: 0.72rem; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; transition: color 0.2s; padding: 0; }
+    .copy-btn:hover { color: var(--accent); }
+    pre {
+      padding: 1.5rem; overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.87rem; line-height: 1.75;
+    }
+    /* Syntax colors */
+    .sel { color: #f9a8d4; }
+    .prop { color: #93c5fd; }
+    .val { color: #86efac; }
+    .unit { color: #fcd34d; }
+    .cm { color: #4b5563; font-style: italic; }
+    .punc { color: #e2e8f0; }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(168,85,247,0.12);
+      color: #c4b5fd;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    /* Live preview */
+    .live-demo {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .demo-tabs { display: flex; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+    .demo-tab {
+      padding: 0.65rem 1.25rem;
+      font-size: 0.78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .demo-tab.active { color: var(--accent); border-color: var(--accent); }
+    .demo-body { padding: 1.5rem; }
+    .demo-area { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .demo-pane label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.6rem; }
+    textarea.live-code {
+      width: 100%; min-height: 160px;
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      color: #86efac; resize: vertical; outline: none;
+      line-height: 1.7; transition: border-color 0.2s;
+    }
+    textarea.live-code:focus { border-color: var(--accent); }
+    .preview-box {
+      background: #fff; border-radius: 10px;
+      min-height: 160px; overflow: hidden;
+    }
+    iframe.preview-frame { width: 100%; height: 100%; min-height: 160px; border: none; }
+    .run-btn {
+      display: block; width: 100%;
+      background: linear-gradient(90deg, var(--accent), #7c3aed);
+      color: #fff; border: none; padding: 0.85rem;
+      font-family: 'Fraunces', serif; font-weight: 800; font-size: 0.95rem;
+      cursor: pointer; transition: opacity 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .run-btn:hover { opacity: 0.85; }
+
+    /* Callouts */
+    .callout { border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+    .tip { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.2); }
+    .warn { background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.2); }
+    .note { background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.2); }
+    .ct { font-weight: 700; font-size: 0.84rem; margin-bottom: 0.4rem; }
+    .tip .ct { color: var(--accent2); }
+    .warn .ct { color: var(--accent4); }
+    .note .ct { color: var(--accent); }
+    .callout p { margin: 0; font-size: 0.9rem; }
+
+    /* Property table */
+    .prop-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .prop-table thead tr { background: rgba(168,85,247,0.15); }
+    .prop-table th { padding: 0.85rem 1.2rem; text-align: left; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+    .prop-table td { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: #c4bdd8; }
+    .prop-table tr:last-child td { border-bottom: none; }
+    .prop-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .prop-table .pname { font-family: 'JetBrains Mono', monospace; color: #93c5fd; font-size: 0.82rem; }
+
+    /* Color swatch grid */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+    .swatch {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer; transition: transform 0.2s;
+    }
+    .swatch:hover { transform: translateY(-3px); }
+    .swatch-color { height: 60px; }
+    .swatch-info { padding: 0.6rem 0.8rem; background: var(--card); }
+    .swatch-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+    .swatch-code { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+
+    /* Box model visualiser */
+    .box-model {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .bm-margin { background: rgba(251,146,60,0.12); border: 2px dashed rgba(251,146,60,0.4); border-radius: 10px; padding: 1.2rem; position: relative; }
+    .bm-border { background: rgba(168,85,247,0.1); border: 2px solid rgba(168,85,247,0.5); border-radius: 8px; padding: 1.2rem; }
+    .bm-padding { background: rgba(52,211,153,0.1); border: 2px dashed rgba(52,211,153,0.4); border-radius: 6px; padding: 1.2rem; }
+    .bm-content { background: rgba(56,189,248,0.15); border: 2px solid rgba(56,189,248,0.5); border-radius: 4px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent2); font-weight: 500; }
+    .bm-label { position: absolute; top: 0.3rem; left: 0.6rem; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .bm-margin .bm-label { color: var(--accent4); }
+    .bm-border .bm-label { color: var(--accent); }
+    .bm-padding .bm-label { color: var(--accent3); }
+
+    /* Flexbox playground */
+    .flex-playground { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; margin: 1.5rem 0; }
+    .flex-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .flex-control { display: flex; flex-direction: column; gap: 0.3rem; }
+    .flex-control label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .flex-control select {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.4rem 0.8rem;
+      color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.85rem;
+      outline: none; cursor: pointer; transition: border-color 0.2s;
+    }
+    .flex-control select:focus { border-color: var(--accent); }
+    .flex-preview {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem; min-height: 100px;
+      display: flex; gap: 0.5rem; transition: all 0.3s;
+    }
+    .flex-item {
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      font-size: 0.8rem; font-weight: 600; color: #fff;
+      white-space: nowrap;
+    }
+    .flex-item:nth-child(2) { background: linear-gradient(135deg, var(--accent2), #0369a1); }
+    .flex-item:nth-child(3) { background: linear-gradient(135deg, var(--accent3), #047857); }
+
+    /* Quiz */
+    .quiz-section { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; margin: 2rem 0; }
+    .quiz-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .quiz-icon { width: 46px; height: 46px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .quiz-title { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 800; }
+    .quiz-sub { font-size: 0.82rem; color: var(--muted); }
+    .q-item { margin-bottom: 2rem; }
+    .q-text { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.9rem; color: var(--text); }
+    .q-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .q-opt {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1.1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer; transition: all 0.2s;
+      font-size: 0.9rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .q-opt:hover { border-color: rgba(168,85,247,0.4); }
+    .q-opt.correct { background: rgba(52,211,153,0.08); border-color: var(--accent3); color: var(--accent3); }
+    .q-opt.wrong { background: rgba(251,146,60,0.06); border-color: var(--accent4); color: var(--accent4); }
+    .q-opt input { accent-color: var(--accent); }
+    .quiz-btn {
+      background: linear-gradient(90deg, var(--accent), #7c3aed);
+      color: #fff; border: none; padding: 0.9rem 2.5rem;
+      border-radius: 100px; font-family: 'Fraunces', serif;
+      font-weight: 800; font-size: 1rem; cursor: pointer;
+      box-shadow: 0 4px 25px rgba(168,85,247,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quiz-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 35px rgba(168,85,247,0.45); }
+    .quiz-result { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; text-align: center; }
+    .quiz-result.show { display: block; }
+    .quiz-result.perfect { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.3); }
+    .quiz-result.good { background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.3); }
+    .qr-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .qr-score { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 0.3rem; }
+    .perfect .qr-score { color: var(--accent3); }
+    .good .qr-score { color: var(--accent); }
+    .qr-msg { font-size: 0.9rem; color: var(--muted); }
+
+    /* Lesson nav */
+    .lesson-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .lnav { display: flex; flex-direction: column; padding: 1rem 1.5rem; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.2s; flex: 1; max-width: 240px; }
+    .lnav:hover { border-color: rgba(168,85,247,0.4); }
+    .lnav-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .lnav-title { font-weight: 600; font-size: 0.9rem; }
+    .lnav.next { text-align: right; margin-left: auto; }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Fraunces', serif; font-weight: 900; font-size: 1.1rem; }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 920px) {
+      .tutorial-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .content { padding: 2rem 1.5rem 5rem; }
+      .demo-area { grid-template-columns: 1fr; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1.5rem 5%; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Nk<span>Tech</span>Vision</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="index.html#why">Why Us</a></li>
+      <li><a href="About_Me.html">About</a></li>
+      <li><a href="Contact_Us.html" class="nav-cta">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="tutorial-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">CSS Tutorial</div>
+      <div class="sidebar-tag">Beginner · 12 Lessons</div>
+
+      <div class="prog-label"><span>Progress</span><span id="progPct">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+
+      <div class="sb-section">Foundations</div>
+      <a href="#what" class="sb-link active" onclick="setActive(this)"><span class="n">01</span> What is CSS?</a>
+      <a href="#syntax" class="sb-link" onclick="setActive(this)"><span class="n">02</span> Syntax & Selectors</a>
+      <a href="#colors" class="sb-link" onclick="setActive(this)"><span class="n">03</span> Colors</a>
+      <a href="#text" class="sb-link" onclick="setActive(this)"><span class="n">04</span> Text & Fonts</a>
+      <a href="#boxmodel" class="sb-link" onclick="setActive(this)"><span class="n">05</span> The Box Model</a>
+
+      <div class="sb-section">Layout</div>
+      <a href="#display" class="sb-link" onclick="setActive(this)"><span class="n">06</span> Display & Visibility</a>
+      <a href="#flexbox" class="sb-link" onclick="setActive(this)"><span class="n">07</span> Flexbox</a>
+      <a href="#grid" class="sb-link" onclick="setActive(this)"><span class="n">08</span> CSS Grid</a>
+      <a href="#responsive" class="sb-link" onclick="setActive(this)"><span class="n">09</span> Responsive Design</a>
+
+      <div class="sb-section">Styling</div>
+      <a href="#backgrounds" class="sb-link" onclick="setActive(this)"><span class="n">10</span> Backgrounds</a>
+      <a href="#animations" class="sb-link" onclick="setActive(this)"><span class="n">11</span> Animations</a>
+
+      <div class="sb-section">Practice</div>
+      <a href="#quiz" class="sb-link" onclick="setActive(this)"><span class="n">12</span> Final Quiz</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html#courses">Courses</a><span>/</span>
+        <span>CSS Tutorial</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero-banner">
+        <div class="hero-badge">🎨 Lesson · Beginner</div>
+        <h1>CSS — Style the Web</h1>
+        <p>Learn to transform plain HTML into beautiful, responsive, animated websites. From colours to layouts to effects.</p>
+      </div>
+
+      <!-- ─── 1. WHAT IS CSS ─── -->
+      <section class="lesson" id="what">
+        <div class="lesson-head">
+          <div class="lesson-num">1</div>
+          <h2>What is CSS?</h2>
+        </div>
+        <p>CSS stands for <strong>Cascading Style Sheets</strong>. While HTML creates the structure of a page (the skeleton), CSS controls how it <em>looks</em> — colours, fonts, spacing, layout, and animations.</p>
+        <p>Without CSS, every webpage would just be plain black text on a white background. CSS is what makes the web beautiful.</p>
+
+        <div class="callout tip">
+          <div class="ct">💡 The "Cascade" in CSS</div>
+          <p>CSS rules "cascade" — meaning when multiple rules apply to the same element, the browser follows specific priority rules to decide which one wins. More specific rules beat less specific ones.</p>
+        </div>
+
+        <h3>Three Ways to Add CSS</h3>
+        <div class="code-block">
+          <div class="code-head">
+            <div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div>
+            <span class="code-filename">index.html</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><span class="cm">/* 1. External CSS (BEST — put in a separate .css file) */</span>
+<span class="sel">&lt;link</span> <span class="prop">rel</span>=<span class="val">"stylesheet"</span> <span class="prop">href</span>=<span class="val">"style.css"</span><span class="sel">&gt;</span>
+
+<span class="cm">/* 2. Internal CSS (inside &lt;style&gt; tag in &lt;head&gt;) */</span>
+<span class="sel">&lt;style&gt;</span>
+  <span class="sel">h1</span> <span class="punc">{</span> <span class="prop">color</span><span class="punc">:</span> <span class="val">blue</span><span class="punc">; }</span>
+<span class="sel">&lt;/style&gt;</span>
+
+<span class="cm">/* 3. Inline CSS (directly on the element — avoid if possible) */</span>
+<span class="sel">&lt;h1</span> <span class="prop">style</span>=<span class="val">"color: blue;"</span><span class="sel">&gt;</span>Hello<span class="sel">&lt;/h1&gt;</span></pre>
+        </div>
+      </section>
+
+      <!-- ─── 2. SYNTAX ─── -->
+      <section class="lesson reveal" id="syntax">
+        <div class="lesson-head">
+          <div class="lesson-num">2</div>
+          <h2>Syntax & Selectors</h2>
+        </div>
+        <p>A CSS rule has two parts: a <strong>selector</strong> (what to style) and a <strong>declaration block</strong> (how to style it).</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">/* Selector { property: value; } */</span>
+
+<span class="sel">h1</span> <span class="punc">{</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">purple</span><span class="punc">;</span>
+  <span class="prop">font-size</span><span class="punc">:</span> <span class="unit">32px</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Class selector (.) — reusable on many elements */</span>
+<span class="sel">.highlight</span> <span class="punc">{</span>
+  <span class="prop">background-color</span><span class="punc">:</span> <span class="val">yellow</span><span class="punc">;</span>
+  <span class="prop">padding</span><span class="punc">:</span> <span class="unit">4px 8px</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* ID selector (#) — unique, use only once per page */</span>
+<span class="sel">#hero</span> <span class="punc">{</span>
+  <span class="prop">background</span><span class="punc">:</span> <span class="val">navy</span><span class="punc">;</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">white</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Multiple selectors at once */</span>
+<span class="sel">h1, h2, h3</span> <span class="punc">{</span>
+  <span class="prop">font-family</span><span class="punc">:</span> <span class="val">Georgia, serif</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Hover state — triggers when mouse is over element */</span>
+<span class="sel">button:hover</span> <span class="punc">{</span>
+  <span class="prop">background-color</span><span class="punc">:</span> <span class="val">darkblue</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3>Selector Cheat Sheet</h3>
+        <table class="prop-table">
+          <thead><tr><th>Selector</th><th>Targets</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pname">element</span></td><td>All elements of that type</td><td><code>p { }</code></td></tr>
+            <tr><td><span class="pname">.class</span></td><td>All elements with that class</td><td><code>.card { }</code></td></tr>
+            <tr><td><span class="pname">#id</span></td><td>The single element with that ID</td><td><code>#header { }</code></td></tr>
+            <tr><td><span class="pname">*</span></td><td>Every element on the page</td><td><code>* { }</code></td></tr>
+            <tr><td><span class="pname">parent child</span></td><td>Child inside parent</td><td><code>nav a { }</code></td></tr>
+            <tr><td><span class="pname">element:hover</span></td><td>Element when hovered</td><td><code>a:hover { }</code></td></tr>
+            <tr><td><span class="pname">element:first-child</span></td><td>First child element</td><td><code>li:first-child { }</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ─── 3. COLORS ─── -->
+      <section class="lesson reveal" id="colors">
+        <div class="lesson-head">
+          <div class="lesson-num">3</div>
+          <h2>Colors</h2>
+        </div>
+        <p>CSS gives you multiple ways to specify colors. The most useful are <strong>named colors</strong>, <strong>hex codes</strong>, and <strong>RGB/RGBA</strong>.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">p</span> <span class="punc">{</span>
+  <span class="cm">/* Named color */</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">tomato</span><span class="punc">;</span>
+
+  <span class="cm">/* Hex code (#RRGGBB) */</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">#a855f7</span><span class="punc">;</span>
+
+  <span class="cm">/* RGB — red, green, blue (0–255) */</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">rgb(168, 85, 247)</span><span class="punc">;</span>
+
+  <span class="cm">/* RGBA — same but with opacity (0=transparent, 1=solid) */</span>
+  <span class="prop">background-color</span><span class="punc">:</span> <span class="val">rgba(168, 85, 247, 0.2)</span><span class="punc">;</span>
+
+  <span class="cm">/* HSL — hue, saturation, lightness */</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">hsl(271, 91%, 65%)</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3>Popular CSS Colors</h3>
+        <div class="color-grid">
+          <div class="swatch"><div class="swatch-color" style="background:#a855f7"></div><div class="swatch-info"><div class="swatch-name">Purple</div><div class="swatch-code">#a855f7</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#38bdf8"></div><div class="swatch-info"><div class="swatch-name">Sky Blue</div><div class="swatch-code">#38bdf8</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#34d399"></div><div class="swatch-info"><div class="swatch-name">Emerald</div><div class="swatch-code">#34d399</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#fb923c"></div><div class="swatch-info"><div class="swatch-name">Orange</div><div class="swatch-code">#fb923c</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#f43f5e"></div><div class="swatch-info"><div class="swatch-name">Rose</div><div class="swatch-code">#f43f5e</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#fbbf24"></div><div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-code">#fbbf24</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#1e293b"></div><div class="swatch-info"><div class="swatch-name">Slate Dark</div><div class="swatch-code">#1e293b</div></div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#f8fafc"></div><div class="swatch-info"><div class="swatch-name">Off White</div><div class="swatch-code">#f8fafc</div></div></div>
+        </div>
+      </section>
+
+      <!-- ─── 4. TEXT & FONTS ─── -->
+      <section class="lesson reveal" id="text">
+        <div class="lesson-head">
+          <div class="lesson-num">4</div>
+          <h2>Text & Fonts</h2>
+        </div>
+        <p>Typography is one of the most powerful tools in design. CSS gives you full control over fonts, sizes, spacing, and alignment.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">body</span> <span class="punc">{</span>
+  <span class="prop">font-family</span><span class="punc">:</span> <span class="val">'Georgia', serif</span><span class="punc">;</span>    <span class="cm">/* Font choice */</span>
+  <span class="prop">font-size</span><span class="punc">:</span> <span class="unit">16px</span><span class="punc">;</span>                <span class="cm">/* Base size */</span>
+  <span class="prop">font-weight</span><span class="punc">:</span> <span class="val">400</span><span class="punc">;</span>               <span class="cm">/* Normal weight */</span>
+  <span class="prop">line-height</span><span class="punc">:</span> <span class="val">1.6</span><span class="punc">;</span>              <span class="cm">/* Space between lines */</span>
+  <span class="prop">color</span><span class="punc">:</span> <span class="val">#1a1410</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="sel">h1</span> <span class="punc">{</span>
+  <span class="prop">font-size</span><span class="punc">:</span> <span class="unit">2.5rem</span><span class="punc">;</span>             <span class="cm">/* rem = relative to root */</span>
+  <span class="prop">font-weight</span><span class="punc">:</span> <span class="val">800</span><span class="punc">;</span>               <span class="cm">/* Bold */</span>
+  <span class="prop">letter-spacing</span><span class="punc">:</span> <span class="unit">-1px</span><span class="punc">;</span>         <span class="cm">/* Tighten letters */</span>
+  <span class="prop">text-align</span><span class="punc">:</span> <span class="val">center</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="sel">p</span> <span class="punc">{</span>
+  <span class="prop">text-transform</span><span class="punc">:</span> <span class="val">uppercase</span><span class="punc">;</span>    <span class="cm">/* ALL CAPS */</span>
+  <span class="prop">text-decoration</span><span class="punc">:</span> <span class="val">underline</span><span class="punc">;</span>  <span class="cm">/* Underline */</span>
+  <span class="prop">text-indent</span><span class="punc">:</span> <span class="unit">2rem</span><span class="punc">;</span>            <span class="cm">/* First line indent */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ct">💡 Google Fonts — Free Beautiful Fonts</div>
+          <p>Add any font from fonts.google.com by pasting the link tag in your HTML <code>&lt;head&gt;</code>, then using it in CSS: <code>font-family: 'Roboto', sans-serif;</code></p>
+        </div>
+      </section>
+
+      <!-- ─── 5. BOX MODEL ─── -->
+      <section class="lesson reveal" id="boxmodel">
+        <div class="lesson-head">
+          <div class="lesson-num">5</div>
+          <h2>The Box Model</h2>
+        </div>
+        <p>Every HTML element is a <strong>box</strong>. Understanding the box model is the single most important concept in CSS layout. Each box has 4 layers:</p>
+
+        <div class="box-model">
+          <div class="bm-margin">
+            <div class="bm-label">Margin — space outside</div>
+            <div class="bm-border">
+              <div class="bm-label">Border — the edge</div>
+              <div class="bm-padding">
+                <div class="bm-label">Padding — space inside</div>
+                <div class="bm-content">Content (text, image…)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">.card</span> <span class="punc">{</span>
+  <span class="cm">/* Content size */</span>
+  <span class="prop">width</span><span class="punc">:</span> <span class="unit">300px</span><span class="punc">;</span>
+  <span class="prop">height</span><span class="punc">:</span> <span class="unit">200px</span><span class="punc">;</span>
+
+  <span class="cm">/* Padding: space INSIDE the box */</span>
+  <span class="prop">padding</span><span class="punc">:</span> <span class="unit">20px</span><span class="punc">;</span>             <span class="cm">/* all sides */</span>
+  <span class="prop">padding</span><span class="punc">:</span> <span class="unit">10px 20px</span><span class="punc">;</span>       <span class="cm">/* top/bottom  left/right */</span>
+
+  <span class="cm">/* Border */</span>
+  <span class="prop">border</span><span class="punc">:</span> <span class="unit">2px</span> <span class="val">solid</span> <span class="val">#a855f7</span><span class="punc">;</span>
+  <span class="prop">border-radius</span><span class="punc">:</span> <span class="unit">12px</span><span class="punc">;</span>       <span class="cm">/* Rounded corners */</span>
+
+  <span class="cm">/* Margin: space OUTSIDE the box */</span>
+  <span class="prop">margin</span><span class="punc">:</span> <span class="unit">24px auto</span><span class="punc">;</span>        <span class="cm">/* auto = center horizontally */</span>
+
+  <span class="cm">/* box-sizing: border-box is a game changer */</span>
+  <span class="prop">box-sizing</span><span class="punc">:</span> <span class="val">border-box</span><span class="punc">;</span>   <span class="cm">/* padding included in width */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="callout note">
+          <div class="ct">🔑 Always Use box-sizing: border-box</div>
+          <p>Add <code>* { box-sizing: border-box; }</code> at the top of every CSS file. This makes widths behave predictably — padding won't add unexpected extra size to your elements.</p>
+        </div>
+      </section>
+
+      <!-- ─── 6. DISPLAY ─── -->
+      <section class="lesson reveal" id="display">
+        <div class="lesson-head">
+          <div class="lesson-num">6</div>
+          <h2>Display & Visibility</h2>
+        </div>
+        <p>The <code>display</code> property controls how an element behaves in the layout flow.</p>
+
+        <table class="prop-table">
+          <thead><tr><th>Value</th><th>Behaviour</th><th>Common Elements</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pname">block</span></td><td>Takes full width, starts on new line</td><td>div, p, h1–h6, section</td></tr>
+            <tr><td><span class="pname">inline</span></td><td>Flows with text, no width/height</td><td>span, a, strong, em</td></tr>
+            <tr><td><span class="pname">inline-block</span></td><td>Flows inline but accepts width/height</td><td>img, buttons</td></tr>
+            <tr><td><span class="pname">flex</span></td><td>Flexible row/column layout</td><td>nav bars, card rows</td></tr>
+            <tr><td><span class="pname">grid</span></td><td>Two-dimensional grid layout</td><td>page layouts, galleries</td></tr>
+            <tr><td><span class="pname">none</span></td><td>Hides element completely</td><td>Modals, dropdowns</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ─── 7. FLEXBOX ─── -->
+      <section class="lesson reveal" id="flexbox">
+        <div class="lesson-head">
+          <div class="lesson-num">7</div>
+          <h2>Flexbox</h2>
+        </div>
+        <p>Flexbox is the most useful layout tool in modern CSS. It makes it easy to align, space, and reorder items in a row or column — with just a few lines of code.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">.container</span> <span class="punc">{</span>
+  <span class="prop">display</span><span class="punc">:</span> <span class="val">flex</span><span class="punc">;</span>
+
+  <span class="cm">/* Direction: row (default) or column */</span>
+  <span class="prop">flex-direction</span><span class="punc">:</span> <span class="val">row</span><span class="punc">;</span>
+
+  <span class="cm">/* Horizontal alignment */</span>
+  <span class="prop">justify-content</span><span class="punc">:</span> <span class="val">space-between</span><span class="punc">;</span>
+  <span class="cm">/* Options: flex-start | flex-end | center | space-around | space-evenly */</span>
+
+  <span class="cm">/* Vertical alignment */</span>
+  <span class="prop">align-items</span><span class="punc">:</span> <span class="val">center</span><span class="punc">;</span>
+  <span class="cm">/* Options: flex-start | flex-end | center | stretch */</span>
+
+  <span class="cm">/* Wrap onto next line if needed */</span>
+  <span class="prop">flex-wrap</span><span class="punc">:</span> <span class="val">wrap</span><span class="punc">;</span>
+
+  <span class="cm">/* Gap between items */</span>
+  <span class="prop">gap</span><span class="punc">:</span> <span class="unit">1rem</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3>Interactive Flexbox Playground</h3>
+        <p>Change the settings below and watch the layout update live!</p>
+
+        <div class="flex-playground">
+          <div class="flex-controls">
+            <div class="flex-control">
+              <label>flex-direction</label>
+              <select id="fd" onchange="updateFlex()">
+                <option>row</option>
+                <option>row-reverse</option>
+                <option>column</option>
+                <option>column-reverse</option>
+              </select>
+            </div>
+            <div class="flex-control">
+              <label>justify-content</label>
+              <select id="jc" onchange="updateFlex()">
+                <option>flex-start</option>
+                <option>center</option>
+                <option>flex-end</option>
+                <option>space-between</option>
+                <option>space-around</option>
+                <option>space-evenly</option>
+              </select>
+            </div>
+            <div class="flex-control">
+              <label>align-items</label>
+              <select id="ai" onchange="updateFlex()">
+                <option>flex-start</option>
+                <option value="center" selected>center</option>
+                <option>flex-end</option>
+                <option>stretch</option>
+              </select>
+            </div>
+            <div class="flex-control">
+              <label>flex-wrap</label>
+              <select id="fw" onchange="updateFlex()">
+                <option>nowrap</option>
+                <option>wrap</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex-preview" id="flexPreview">
+            <div class="flex-item">Box 1</div>
+            <div class="flex-item">Box 2</div>
+            <div class="flex-item">Box 3</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── 8. GRID ─── -->
+      <section class="lesson reveal" id="grid">
+        <div class="lesson-head">
+          <div class="lesson-num">8</div>
+          <h2>CSS Grid</h2>
+        </div>
+        <p>CSS Grid is perfect for <strong>two-dimensional</strong> layouts — think page templates, image galleries, and card grids. While Flexbox works in one direction (row or column), Grid works in both.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">.grid-container</span> <span class="punc">{</span>
+  <span class="prop">display</span><span class="punc">:</span> <span class="val">grid</span><span class="punc">;</span>
+
+  <span class="cm">/* 3 equal columns */</span>
+  <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">1fr 1fr 1fr</span><span class="punc">;</span>
+
+  <span class="cm">/* Shorthand: repeat(3, 1fr) = same as above */</span>
+  <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">repeat(3, 1fr)</span><span class="punc">;</span>
+
+  <span class="cm">/* Auto-fill: as many columns as fit */</span>
+  <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">repeat(auto-fill, minmax(250px, 1fr))</span><span class="punc">;</span>
+
+  <span class="prop">gap</span><span class="punc">:</span> <span class="unit">1.5rem</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Make an item span multiple columns */</span>
+<span class="sel">.featured-card</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span><span class="punc">:</span> <span class="val">span 2</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="ct">💡 Flexbox vs Grid — When to Use Which?</div>
+          <p>Use <strong>Flexbox</strong> for one-dimensional layouts (a navigation bar, a row of buttons). Use <strong>Grid</strong> for two-dimensional layouts (page structure, card galleries, complex templates).</p>
+        </div>
+      </section>
+
+      <!-- ─── 9. RESPONSIVE ─── -->
+      <section class="lesson reveal" id="responsive">
+        <div class="lesson-head">
+          <div class="lesson-num">9</div>
+          <h2>Responsive Design</h2>
+        </div>
+        <p>Responsive design means your website looks great on <strong>all screen sizes</strong> — from phones to tablets to desktops. The key tool is <strong>media queries</strong>.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">/* Default styles (mobile first) */</span>
+<span class="sel">.card-grid</span> <span class="punc">{</span>
+  <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">1fr</span><span class="punc">;</span>  <span class="cm">/* 1 column on mobile */</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Tablet: screens 768px and wider */</span>
+<span class="sel">@media (min-width: 768px)</span> <span class="punc">{</span>
+  <span class="sel">.card-grid</span> <span class="punc">{</span>
+    <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">1fr 1fr</span><span class="punc">;</span>   <span class="cm">/* 2 columns */</span>
+  <span class="punc">}</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Desktop: screens 1024px and wider */</span>
+<span class="sel">@media (min-width: 1024px)</span> <span class="punc">{</span>
+  <span class="sel">.card-grid</span> <span class="punc">{</span>
+    <span class="prop">grid-template-columns</span><span class="punc">:</span> <span class="val">repeat(3, 1fr)</span><span class="punc">;</span>  <span class="cm">/* 3 columns */</span>
+  <span class="punc">}</span>
+<span class="punc">}</span>
+
+<span class="cm">/* Responsive font sizes with clamp() */</span>
+<span class="sel">h1</span> <span class="punc">{</span>
+  <span class="cm">/* min size, ideal, max size */</span>
+  <span class="prop">font-size</span><span class="punc">:</span> <span class="val">clamp(1.8rem, 4vw, 3.5rem)</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+      </section>
+
+      <!-- ─── 10. BACKGROUNDS ─── -->
+      <section class="lesson reveal" id="backgrounds">
+        <div class="lesson-head">
+          <div class="lesson-num">10</div>
+          <h2>Backgrounds & Shadows</h2>
+        </div>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="sel">.hero</span> <span class="punc">{</span>
+  <span class="cm">/* Solid color */</span>
+  <span class="prop">background-color</span><span class="punc">:</span> <span class="val">#0e0b16</span><span class="punc">;</span>
+
+  <span class="cm">/* Linear gradient */</span>
+  <span class="prop">background</span><span class="punc">:</span> <span class="val">linear-gradient(135deg, #a855f7, #38bdf8)</span><span class="punc">;</span>
+
+  <span class="cm">/* Radial gradient (circle) */</span>
+  <span class="prop">background</span><span class="punc">:</span> <span class="val">radial-gradient(circle, #a855f7, #0e0b16)</span><span class="punc">;</span>
+
+  <span class="cm">/* Image */</span>
+  <span class="prop">background-image</span><span class="punc">:</span> <span class="val">url('hero.jpg')</span><span class="punc">;</span>
+  <span class="prop">background-size</span><span class="punc">:</span> <span class="val">cover</span><span class="punc">;</span>
+  <span class="prop">background-position</span><span class="punc">:</span> <span class="val">center</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="sel">.card</span> <span class="punc">{</span>
+  <span class="cm">/* Drop shadow: x-offset y-offset blur spread color */</span>
+  <span class="prop">box-shadow</span><span class="punc">:</span> <span class="unit">0 8px 30px</span> <span class="val">rgba(168, 85, 247, 0.3)</span><span class="punc">;</span>
+
+  <span class="cm">/* Text shadow */</span>
+  <span class="prop">text-shadow</span><span class="punc">:</span> <span class="unit">0 2px 10px</span> <span class="val">rgba(0,0,0,0.5)</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+      </section>
+
+      <!-- ─── 11. ANIMATIONS ─── -->
+      <section class="lesson reveal" id="animations">
+        <div class="lesson-head">
+          <div class="lesson-num">11</div>
+          <h2>Transitions & Animations</h2>
+        </div>
+        <p>CSS can animate elements without any JavaScript! Use <strong>transitions</strong> for simple hover effects, and <strong>keyframes</strong> for complex animations.</p>
+
+        <div class="code-block">
+          <div class="code-head"><div class="code-dots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="code-filename">style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><span class="cm">/* TRANSITIONS — smooth change on hover */</span>
+<span class="sel">.btn</span> <span class="punc">{</span>
+  <span class="prop">background</span><span class="punc">:</span> <span class="val">purple</span><span class="punc">;</span>
+  <span class="prop">transition</span><span class="punc">:</span> <span class="val">all</span> <span class="unit">0.3s</span> <span class="val">ease</span><span class="punc">;</span>  <span class="cm">/* what, duration, easing */</span>
+<span class="punc">}</span>
+<span class="sel">.btn:hover</span> <span class="punc">{</span>
+  <span class="prop">background</span><span class="punc">:</span> <span class="val">darkviolet</span><span class="punc">;</span>
+  <span class="prop">transform</span><span class="punc">:</span> <span class="val">translateY(-4px)</span><span class="punc">;</span>  <span class="cm">/* move up on hover */</span>
+  <span class="prop">box-shadow</span><span class="punc">:</span> <span class="unit">0 8px 30px</span> <span class="val">rgba(128,0,128,0.4)</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cm">/* KEYFRAME ANIMATIONS */</span>
+<span class="sel">@keyframes</span> <span class="val">fadeIn</span> <span class="punc">{</span>
+  <span class="sel">from</span> <span class="punc">{</span> <span class="prop">opacity</span><span class="punc">:</span> <span class="val">0</span><span class="punc">;</span> <span class="prop">transform</span><span class="punc">:</span> <span class="val">translateY(20px)</span><span class="punc">; }</span>
+  <span class="sel">to</span>   <span class="punc">{</span> <span class="prop">opacity</span><span class="punc">:</span> <span class="val">1</span><span class="punc">;</span> <span class="prop">transform</span><span class="punc">:</span> <span class="val">translateY(0)</span><span class="punc">; }</span>
+<span class="punc">}</span>
+
+<span class="sel">@keyframes</span> <span class="val">spin</span> <span class="punc">{</span>
+  <span class="sel">from</span> <span class="punc">{</span> <span class="prop">transform</span><span class="punc">:</span> <span class="val">rotate(0deg)</span><span class="punc">; }</span>
+  <span class="sel">to</span>   <span class="punc">{</span> <span class="prop">transform</span><span class="punc">:</span> <span class="val">rotate(360deg)</span><span class="punc">; }</span>
+<span class="punc">}</span>
+
+<span class="sel">.animated-box</span> <span class="punc">{</span>
+  <span class="prop">animation</span><span class="punc">:</span> <span class="val">fadeIn</span> <span class="unit">0.6s</span> <span class="val">ease both</span><span class="punc">;</span>
+  <span class="cm">/* name  duration  easing  fill-mode */</span>
+<span class="punc">}</span>
+
+<span class="sel">.spinner</span> <span class="punc">{</span>
+  <span class="prop">animation</span><span class="punc">:</span> <span class="val">spin</span> <span class="unit">1s</span> <span class="val">linear infinite</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3>Live CSS Editor — Try It!</h3>
+        <p>Edit the CSS below and click Run to see your changes instantly.</p>
+
+        <div class="live-demo">
+          <div class="demo-tabs">
+            <div class="demo-tab active">Live Editor</div>
+          </div>
+          <div class="demo-body">
+            <div class="demo-area">
+              <div class="demo-pane">
+                <label>✏️ CSS Code</label>
+                <textarea class="live-code" id="cssEditor" spellcheck="false">.box {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #a855f7, #38bdf8);
+  border-radius: 20px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 8px 30px rgba(168,85,247,0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.box:hover {
+  transform: rotate(10deg) scale(1.1);
+  border-radius: 50%;
+}</textarea>
+              </div>
+              <div class="demo-pane">
+                <label>👁️ Preview</label>
+                <div class="preview-box">
+                  <iframe class="preview-frame" id="cssPreview"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="run-btn" onclick="runCSS()">▶ Run CSS</button>
+        </div>
+      </section>
+
+      <!-- ─── 12. QUIZ ─── -->
+      <section class="lesson reveal" id="quiz">
+        <div class="quiz-section">
+          <div class="quiz-top">
+            <div class="quiz-icon">🧪</div>
+            <div>
+              <div class="quiz-title">CSS Final Quiz</div>
+              <div class="quiz-sub">5 questions · Test your CSS knowledge</div>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">1. Which CSS property changes the text color?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q1" value="a"> font-color</label>
+              <label class="q-opt"><input type="radio" name="q1" value="b"> text-color</label>
+              <label class="q-opt"><input type="radio" name="q1" value="c"> color</label>
+              <label class="q-opt"><input type="radio" name="q1" value="d"> foreground</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">2. What does the class selector start with?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q2" value="a"> #</label>
+              <label class="q-opt"><input type="radio" name="q2" value="b"> .</label>
+              <label class="q-opt"><input type="radio" name="q2" value="c"> @</label>
+              <label class="q-opt"><input type="radio" name="q2" value="d"> *</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">3. Which property is used to create flexible layouts in one direction?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q3" value="a"> display: grid</label>
+              <label class="q-opt"><input type="radio" name="q3" value="b"> display: block</label>
+              <label class="q-opt"><input type="radio" name="q3" value="c"> display: flex</label>
+              <label class="q-opt"><input type="radio" name="q3" value="d"> display: table</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">4. In the box model, which layer is directly around the content?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q4" value="a"> Margin</label>
+              <label class="q-opt"><input type="radio" name="q4" value="b"> Border</label>
+              <label class="q-opt"><input type="radio" name="q4" value="c"> Padding</label>
+              <label class="q-opt"><input type="radio" name="q4" value="d"> Outline</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">5. Which rule is used to apply styles at specific screen sizes?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q5" value="a"> @keyframes</label>
+              <label class="q-opt"><input type="radio" name="q5" value="b"> @import</label>
+              <label class="q-opt"><input type="radio" name="q5" value="c"> @media</label>
+              <label class="q-opt"><input type="radio" name="q5" value="d"> @screen</label>
+            </div>
+          </div>
+
+          <button class="quiz-btn" onclick="runQuiz()">Submit Answers</button>
+
+          <div class="quiz-result" id="quizResult">
+            <div class="qr-emoji" id="qrE"></div>
+            <div class="qr-score" id="qrS"></div>
+            <div class="qr-msg" id="qrM"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-nav">
+        <a href="html_tutorial.html" class="lnav">
+          <span class="lnav-lbl">← Previous</span>
+          <span class="lnav-title">HTML Tutorial</span>
+        </a>
+        <a href="https://javascript.info/intro" target="_blank" class="lnav next">
+          <span class="lnav-lbl">Next Course →</span>
+          <span class="lnav-title">JavaScript Tutorial</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Nk<span>Tech</span>Vision</div>
+    <p class="footer-copy">© 2025 NkTechVision. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="About_Me.html">About</a>
+      <a href="Contact_Us.html">Contact</a>
+      <a href="index.html#courses">Courses</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    // Sidebar + progress
+    function setActive(el) {
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+      updateProg();
+    }
+    function updateProg() {
+      const links = document.querySelectorAll('.sb-link');
+      const active = document.querySelector('.sb-link.active');
+      const idx = Array.from(links).indexOf(active) + 1;
+      const pct = Math.round((idx / links.length) * 100);
+      document.getElementById('progFill').style.width = pct + '%';
+      document.getElementById('progPct').textContent = pct + '%';
+    }
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+      updateProg();
+    });
+
+    // Flexbox playground
+    function updateFlex() {
+      const p = document.getElementById('flexPreview');
+      p.style.flexDirection = document.getElementById('fd').value;
+      p.style.justifyContent = document.getElementById('jc').value;
+      p.style.alignItems = document.getElementById('ai').value;
+      p.style.flexWrap = document.getElementById('fw').value;
+    }
+    updateFlex();
+
+    // Live CSS editor
+    function runCSS() {
+      const css = document.getElementById('cssEditor').value;
+      const html = `<style>body{margin:0;background:#fff;font-family:sans-serif;}${css}</style><div class="box">Hover me!</div>`;
+      document.getElementById('cssPreview').srcdoc = html;
+    }
+    runCSS();
+
+    // Copy buttons
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Quiz
+    const answers = { q1:'c', q2:'b', q3:'c', q4:'c', q5:'c' };
+    function runQuiz() {
+      let score = 0;
+      Object.keys(answers).forEach(q => {
+        const sel = document.querySelector(`input[name="${q}"]:checked`);
+        document.querySelectorAll(`input[name="${q}"]`).forEach(o => {
+          const lbl = o.closest('.q-opt');
+          lbl.classList.remove('correct','wrong');
+          if (o.value === answers[q]) lbl.classList.add('correct');
+          else if (sel && o.value === sel.value) lbl.classList.add('wrong');
+          o.disabled = true;
+        });
+        if (sel && sel.value === answers[q]) score++;
+      });
+      const box = document.getElementById('quizResult');
+      box.classList.add('show');
+      if (score === 5) {
+        box.className = 'quiz-result show perfect';
+        document.getElementById('qrE').textContent = '🏆';
+        document.getElementById('qrS').textContent = '5 / 5 — Perfect!';
+        document.getElementById('qrM').textContent = 'You\'ve mastered CSS basics! Move on to JavaScript next.';
+      } else {
+        box.className = 'quiz-result show good';
+        document.getElementById('qrE').textContent = score >= 3 ? '👍' : '📖';
+        document.getElementById('qrS').textContent = `${score} / 5`;
+        document.getElementById('qrM').textContent = score >= 3 ? 'Great job! Review the highlighted answers to perfect your score.' : 'Keep practising! Go back through the lessons and try again.';
+      }
+    }
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+    }), { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    updateProg();
+  </script>
+</body>
+</html>
