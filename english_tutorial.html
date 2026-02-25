@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learn English from scratch – free beginner tutorial covering grammar, vocabulary, tenses, and speaking tips by NkTechVision."/>
+  <title>English Tutorial – NkTechVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --accent: #c8522a;
+      --accent-light: rgba(200,82,42,0.08);
+      --accent2: #2a6cc8;
+      --accent3: #2a9e5a;
+      --text: #1a1410;
+      --muted: #7a6e65;
+      --card: #ffffff;
+      --ink: #1a1410;
+      --paper: #f5f0e8;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+    /* Paper texture */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 5%; background: rgba(250,248,244,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.35rem; color: var(--text); text-decoration: none; letter-spacing: -0.3px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent) !important; color: #fff !important; padding: 0.45rem 1.1rem !important; border-radius: 100px !important; font-weight: 600 !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* LAYOUT */
+    .tutorial-layout { display: grid; grid-template-columns: 270px 1fr; min-height: 100vh; padding-top: 65px; }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 65px; height: calc(100vh - 65px); overflow-y: auto; border-right: 1px solid var(--border); padding: 2rem 1.5rem; background: var(--paper); }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .sidebar-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+    .sidebar-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+    .progress-wrap { margin-bottom: 1.5rem; }
+    .progress-top { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); font-weight: 600; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .progress-bar { height: 5px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #e8844a); border-radius: 100px; width: 0%; transition: width 0.5s ease; }
+
+    .sidebar-section { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 1.5rem 0 0.5rem; }
+    .sidebar-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.15rem; transition: all 0.2s; font-weight: 500; }
+    .sidebar-link:hover, .sidebar-link.active { background: var(--accent-light); color: var(--accent); }
+    .sidebar-link .num { font-size: 0.7rem; font-weight: 700; color: var(--border); min-width: 16px; }
+    .sidebar-link.active .num { color: var(--accent); }
+
+    /* MAIN */
+    .tutorial-content { padding: 3.5rem 5rem 7rem; max-width: 860px; animation: fadeUp 0.5s ease both; }
+
+    /* Breadcrumb */
+    .breadcrumb { display: flex; gap: 0.5rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { opacity: 0.4; }
+
+    /* Hero banner */
+    .lesson-hero { background: linear-gradient(135deg, #c8522a 0%, #e8844a 50%, #f0a060 100%); border-radius: 20px; padding: 3rem; margin-bottom: 3rem; color: #fff; position: relative; overflow: hidden; }
+    .lesson-hero::before { content: '🇬🇧'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.2; }
+    .lesson-hero-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.3rem 0.9rem; border-radius: 100px; margin-bottom: 1rem; }
+    .lesson-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin-bottom: 0.75rem; }
+    .lesson-hero p { opacity: 0.85; font-weight: 300; max-width: 480px; font-size: 1.02rem; }
+
+    /* Topic pills */
+    .topic-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .pill { padding: 0.4rem 1rem; border-radius: 100px; border: 1.5px solid var(--border); background: var(--surface); font-size: 0.8rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+    .pill:hover, .pill.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+    /* Section styles */
+    .lesson-section { margin-bottom: 4rem; }
+    .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+    .section-num { width: 36px; height: 36px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+    h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; color: var(--ink); }
+    h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--ink); }
+    p { color: #3a332c; margin-bottom: 1.2rem; font-weight: 400; }
+
+    /* Example boxes */
+    .example-box { background: var(--paper); border: 1.5px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+    .example-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.6rem; }
+    .example-text { font-size: 0.95rem; color: var(--ink); }
+    .example-text .highlight { background: rgba(200,82,42,0.12); color: var(--accent); padding: 0.1rem 0.3rem; border-radius: 3px; font-weight: 600; }
+    .example-text .correct { color: var(--accent3); font-weight: 600; }
+    .example-text .wrong { color: #c82a2a; font-weight: 600; text-decoration: line-through; }
+
+    .example-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .ex-card { padding: 1rem 1.2rem; border-radius: 10px; font-size: 0.9rem; }
+    .ex-good { background: rgba(42,158,90,0.08); border: 1px solid rgba(42,158,90,0.2); }
+    .ex-good .ex-label { color: var(--accent3); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+    .ex-bad { background: rgba(200,42,42,0.06); border: 1px solid rgba(200,42,42,0.15); }
+    .ex-bad .ex-label { color: #c82a2a; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+
+    /* Grammar tables */
+    .grammar-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .grammar-table thead tr { background: var(--accent); color: #fff; }
+    .grammar-table th { padding: 0.9rem 1.2rem; text-align: left; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .grammar-table td { padding: 0.85rem 1.2rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .grammar-table tr:last-child td { border-bottom: none; }
+    .grammar-table tr:nth-child(even) td { background: var(--paper); }
+    .grammar-table .tense { font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+
+    /* Vocabulary cards */
+    .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .vocab-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.2rem; cursor: pointer; transition: all 0.25s; user-select: none; }
+    .vocab-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(200,82,42,0.1); }
+    .vocab-card.flipped { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .vocab-word { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .vocab-type { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem; }
+    .vocab-card.flipped .vocab-type { color: rgba(255,255,255,0.7); }
+    .vocab-meaning { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+    .vocab-card.flipped .vocab-meaning { color: rgba(255,255,255,0.9); font-style: normal; }
+    .vocab-hint { font-size: 0.7rem; color: var(--accent); font-weight: 600; margin-top: 0.5rem; }
+    .vocab-card.flipped .vocab-hint { color: rgba(255,255,255,0.6); }
+
+    /* Callouts */
+    .callout { border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+    .callout-tip { background: rgba(42,108,200,0.06); border: 1.5px solid rgba(42,108,200,0.2); }
+    .callout-remember { background: rgba(200,82,42,0.06); border: 1.5px solid rgba(200,82,42,0.2); }
+    .callout-warning { background: rgba(200,160,42,0.06); border: 1.5px solid rgba(200,160,42,0.2); }
+    .callout-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.4rem; }
+    .callout-tip .callout-title { color: var(--accent2); }
+    .callout-remember .callout-title { color: var(--accent); }
+    .callout-warning .callout-title { color: #c8a02a; }
+    .callout p { margin: 0; font-size: 0.9rem; }
+
+    /* Speaking practice */
+    .speaking-card { background: linear-gradient(135deg, rgba(42,108,200,0.06), rgba(42,108,200,0.02)); border: 1.5px solid rgba(42,108,200,0.2); border-radius: 16px; padding: 1.75rem; margin: 1.2rem 0; }
+    .speaking-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent2); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .speaking-prompt { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
+    .speaking-answer { font-size: 0.9rem; color: var(--muted); font-style: italic; display: none; padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: 0.75rem; }
+    .speaking-answer.show { display: block; }
+    .reveal-btn { background: none; border: 1.5px solid rgba(42,108,200,0.3); color: var(--accent2); padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s; }
+    .reveal-btn:hover { background: rgba(42,108,200,0.08); }
+
+    /* Fill-in-the-blank exercise */
+    .exercise-wrap { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+    .exercise-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; }
+    .exercise-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .exercise-item { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; font-size: 0.95rem; }
+    .blank-input { border: none; border-bottom: 2px solid var(--border); background: transparent; padding: 0.2rem 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; color: var(--ink); outline: none; width: 120px; text-align: center; transition: border-color 0.2s; }
+    .blank-input:focus { border-color: var(--accent); }
+    .blank-input.correct-ans { border-color: var(--accent3); color: var(--accent3); }
+    .blank-input.wrong-ans { border-color: #c82a2a; color: #c82a2a; }
+    .check-btn { background: var(--accent); color: #fff; border: none; padding: 0.7rem 1.8rem; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(200,82,42,0.25); margin-top: 1rem; }
+    .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(200,82,42,0.35); }
+    .exercise-result { display: none; margin-top: 1rem; padding: 0.9rem 1.2rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; }
+    .exercise-result.show { display: block; }
+    .exercise-result.pass { background: rgba(42,158,90,0.1); color: var(--accent3); border: 1px solid rgba(42,158,90,0.25); }
+    .exercise-result.partial { background: rgba(200,160,42,0.1); color: #c8a02a; border: 1px solid rgba(200,160,42,0.25); }
+
+    /* Quiz */
+    .quiz-wrap { background: var(--paper); border: 1.5px solid var(--border); border-radius: 20px; padding: 2.5rem; margin: 2rem 0; }
+    .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .quiz-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .quiz-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 800; }
+    .quiz-sub { font-size: 0.82rem; color: var(--muted); }
+    .q-item { margin-bottom: 2rem; }
+    .q-text { font-weight: 600; font-size: 0.95rem; margin-bottom: 1rem; color: var(--ink); }
+    .q-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .q-opt { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.1rem; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+    .q-opt:hover { border-color: rgba(200,82,42,0.3); }
+    .q-opt.correct { background: rgba(42,158,90,0.08); border-color: var(--accent3); color: var(--accent3); font-weight: 600; }
+    .q-opt.wrong { background: rgba(200,42,42,0.06); border-color: #c82a2a; color: #c82a2a; }
+    .q-opt input { accent-color: var(--accent); }
+    .quiz-submit { background: var(--accent); color: #fff; border: none; padding: 0.85rem 2.5rem; border-radius: 100px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(200,82,42,0.3); }
+    .quiz-submit:hover { transform: translateY(-2px); }
+    .quiz-result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; text-align: center; }
+    .quiz-result-box.show { display: block; }
+    .quiz-result-box.perfect { background: rgba(42,158,90,0.08); border: 1.5px solid rgba(42,158,90,0.3); }
+    .quiz-result-box.good { background: rgba(200,82,42,0.06); border: 1.5px solid rgba(200,82,42,0.2); }
+    .qr-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .qr-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .qr-msg { font-size: 0.9rem; color: var(--muted); }
+
+    /* Lesson navigation */
+    .lesson-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+    .lnav-btn { display: flex; flex-direction: column; padding: 1rem 1.5rem; border: 1.5px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.2s; flex: 1; max-width: 240px; }
+    .lnav-btn:hover { border-color: var(--accent); }
+    .lnav-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .lnav-title { font-weight: 600; font-size: 0.88rem; }
+    .lnav-btn.next { text-align: right; margin-left: auto; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--surface); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.1rem; color: var(--ink); }
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .tutorial-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .tutorial-content { padding: 2rem 1.5rem 5rem; }
+      .example-pair { grid-template-columns: 1fr; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1.5rem 5%; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Nk<span>Tech</span>Vision</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="index.html#why">Why Us</a></li>
+      <li><a href="About_Me.html">About</a></li>
+      <li><a href="Contact_Us.html" class="nav-cta">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="tutorial-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">English Tutorial</div>
+      <div class="sidebar-sub">Beginner to Intermediate</div>
+
+      <div class="progress-wrap">
+        <div class="progress-top"><span>Progress</span><span id="progPct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      </div>
+
+      <div class="sidebar-section">Getting Started</div>
+      <a href="#intro" class="sidebar-link active" onclick="setActive(this)"><span class="num">1</span> What is English?</a>
+      <a href="#alphabet" class="sidebar-link" onclick="setActive(this)"><span class="num">2</span> Alphabet & Sounds</a>
+
+      <div class="sidebar-section">Grammar</div>
+      <a href="#nouns" class="sidebar-link" onclick="setActive(this)"><span class="num">3</span> Nouns & Pronouns</a>
+      <a href="#verbs" class="sidebar-link" onclick="setActive(this)"><span class="num">4</span> Verbs & Tenses</a>
+      <a href="#adjectives" class="sidebar-link" onclick="setActive(this)"><span class="num">5</span> Adjectives & Adverbs</a>
+      <a href="#sentences" class="sidebar-link" onclick="setActive(this)"><span class="num">6</span> Building Sentences</a>
+
+      <div class="sidebar-section">Vocabulary</div>
+      <a href="#vocab" class="sidebar-link" onclick="setActive(this)"><span class="num">7</span> Essential Words</a>
+      <a href="#phrases" class="sidebar-link" onclick="setActive(this)"><span class="num">8</span> Common Phrases</a>
+
+      <div class="sidebar-section">Practice</div>
+      <a href="#speaking" class="sidebar-link" onclick="setActive(this)"><span class="num">9</span> Speaking Practice</a>
+      <a href="#exercise" class="sidebar-link" onclick="setActive(this)"><span class="num">10</span> Fill-in-the-Blanks</a>
+      <a href="#quiz" class="sidebar-link" onclick="setActive(this)"><span class="num">11</span> Final Quiz</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="tutorial-content">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="index.html#courses">Courses</a><span>/</span>
+        <span>English Tutorial</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="lesson-hero">
+        <div class="lesson-hero-badge">🎓 Beginner · Free Course</div>
+        <h1>Learn English from Scratch</h1>
+        <p>Master grammar, vocabulary, sentence structure and everyday communication — step by step, completely free.</p>
+      </div>
+
+      <!-- Topic pills -->
+      <div class="topic-pills">
+        <span class="pill active">All Topics</span>
+        <span class="pill">Grammar</span>
+        <span class="pill">Vocabulary</span>
+        <span class="pill">Speaking</span>
+        <span class="pill">Practice</span>
+      </div>
+
+      <!-- ─── SECTION 1: INTRO ─── -->
+      <section class="lesson-section" id="intro">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <h2>What is English?</h2>
+        </div>
+        <p>English is one of the most widely spoken languages in the world, with over <strong>1.5 billion speakers</strong>. It's used in business, education, science, travel, and the internet. Learning English opens doors to countless opportunities.</p>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 Why Learn English?</div>
+          <p>Over 50% of all internet content is in English. It's the official language of aviation, science publications, and international business. It's also the language of many great books, films, and music.</p>
+        </div>
+
+        <p>English belongs to the Germanic language family and uses the <strong>Latin alphabet</strong> (26 letters). It has borrowed words from French, Latin, Greek, and many other languages — which is why it has such a rich vocabulary.</p>
+      </section>
+
+      <!-- ─── SECTION 2: ALPHABET ─── -->
+      <section class="lesson-section reveal" id="alphabet">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <h2>The Alphabet & Sounds</h2>
+        </div>
+        <p>The English alphabet has <strong>26 letters</strong> — 5 vowels and 21 consonants. Knowing how each letter sounds is the first step to reading and speaking English.</p>
+
+        <h3>Vowels</h3>
+        <p>The 5 vowels are: <strong>A, E, I, O, U</strong>. Every English word has at least one vowel sound. Vowels can make different sounds depending on the word.</p>
+
+        <div class="example-box">
+          <div class="example-label">📖 Vowel Examples</div>
+          <div class="example-text">
+            <strong>A</strong> → <span class="highlight">a</span>pple, c<span class="highlight">a</span>t, <span class="highlight">a</span>ge &nbsp;&nbsp;
+            <strong>E</strong> → <span class="highlight">e</span>gg, b<span class="highlight">e</span>d, m<span class="highlight">e</span> &nbsp;&nbsp;
+            <strong>I</strong> → <span class="highlight">i</span>nk, b<span class="highlight">i</span>g, n<span class="highlight">i</span>ght &nbsp;&nbsp;
+            <strong>O</strong> → <span class="highlight">o</span>pen, d<span class="highlight">o</span>g &nbsp;&nbsp;
+            <strong>U</strong> → <span class="highlight">u</span>p, c<span class="highlight">u</span>p, <span class="highlight">u</span>se
+          </div>
+        </div>
+
+        <h3>Consonants</h3>
+        <p>The 21 consonants are all the other letters. Some consonants make surprising sounds in certain words. For example: <strong>C</strong> can sound like "k" (cat) or "s" (city).</p>
+
+        <div class="callout callout-remember">
+          <div class="callout-title">🔑 Remember</div>
+          <p>In English, pronunciation doesn't always match spelling! The best way to improve is to listen and practice speaking out loud every day.</p>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 3: NOUNS ─── -->
+      <section class="lesson-section reveal" id="nouns">
+        <div class="section-header">
+          <div class="section-num">3</div>
+          <h2>Nouns & Pronouns</h2>
+        </div>
+
+        <h3>Nouns</h3>
+        <p>A <strong>noun</strong> is a word for a person, place, thing, or idea.</p>
+
+        <table class="grammar-table">
+          <thead><tr><th>Type</th><th>Definition</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Person</strong></td><td>A human being</td><td>teacher, student, Kishor</td></tr>
+            <tr><td><strong>Place</strong></td><td>A location</td><td>school, city, India, park</td></tr>
+            <tr><td><strong>Thing</strong></td><td>An object</td><td>book, phone, computer, car</td></tr>
+            <tr><td><strong>Idea</strong></td><td>An abstract concept</td><td>love, freedom, knowledge</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Singular & Plural Nouns</h3>
+        <p>Most nouns become <strong>plural</strong> (more than one) by adding <strong>-s</strong> or <strong>-es</strong>.</p>
+
+        <div class="example-pair">
+          <div class="ex-card ex-good">
+            <div class="ex-label">✓ Correct</div>
+            one <strong>cat</strong> → two <strong>cats</strong><br>
+            one <strong>book</strong> → three <strong>books</strong><br>
+            one <strong>box</strong> → two <strong>boxes</strong>
+          </div>
+          <div class="ex-card ex-bad">
+            <div class="ex-label">✗ Incorrect</div>
+            two <span class="wrong">cat</span> (missing -s)<br>
+            three <span class="wrong">bookss</span> (double -s)<br>
+            one <span class="wrong">boxs</span> (should be -es)
+          </div>
+        </div>
+
+        <h3>Pronouns</h3>
+        <p>A <strong>pronoun</strong> replaces a noun so you don't have to repeat it. Instead of saying "Kishor went to Kishor's school," you say "He went to his school."</p>
+
+        <table class="grammar-table">
+          <thead><tr><th>Subject</th><th>Object</th><th>Possessive</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>I</td><td>me</td><td>my / mine</td><td>I love my dog.</td></tr>
+            <tr><td>You</td><td>you</td><td>your / yours</td><td>Is this your book?</td></tr>
+            <tr><td>He</td><td>him</td><td>his</td><td>He lost his phone.</td></tr>
+            <tr><td>She</td><td>her</td><td>her / hers</td><td>She read her book.</td></tr>
+            <tr><td>We</td><td>us</td><td>our / ours</td><td>We love our school.</td></tr>
+            <tr><td>They</td><td>them</td><td>their / theirs</td><td>They finished their work.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ─── SECTION 4: VERBS & TENSES ─── -->
+      <section class="lesson-section reveal" id="verbs">
+        <div class="section-header">
+          <div class="section-num">4</div>
+          <h2>Verbs & Tenses</h2>
+        </div>
+
+        <p>A <strong>verb</strong> is an action or state word — it tells you what someone <em>does</em> or <em>is</em>. Every sentence in English must have a verb.</p>
+
+        <div class="example-box">
+          <div class="example-label">📖 Common Verbs</div>
+          <div class="example-text">
+            be, have, do, say, go, get, make, know, think, take, come, see, want, look, use, find, give, tell, work, feel
+          </div>
+        </div>
+
+        <h3>The 3 Main Tenses</h3>
+
+        <table class="grammar-table">
+          <thead><tr><th>Tense</th><th>When?</th><th>Structure</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tense">Past</span></td><td>Already happened</td><td>Subject + verb-ed</td><td>She <strong>walked</strong> to school.</td></tr>
+            <tr><td><span class="tense">Present</span></td><td>Happening now / always true</td><td>Subject + verb</td><td>He <strong>walks</strong> to school.</td></tr>
+            <tr><td><span class="tense">Future</span></td><td>Will happen</td><td>Subject + will + verb</td><td>They <strong>will walk</strong> to school.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Present Continuous (Right Now)</h3>
+        <p>Use this tense to describe something happening at this exact moment. Structure: <strong>Subject + is/are + verb-ing</strong></p>
+
+        <div class="example-pair">
+          <div class="ex-card ex-good">
+            <div class="ex-label">✓ Examples</div>
+            I <strong>am learning</strong> English.<br>
+            She <strong>is reading</strong> a book.<br>
+            They <strong>are playing</strong> football.
+          </div>
+          <div class="ex-card ex-bad">
+            <div class="ex-label">✗ Common Mistakes</div>
+            I <span class="wrong">am learn</span> English.<br>
+            She <span class="wrong">is read</span> a book.<br>
+            They <span class="wrong">are play</span> football.
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ Irregular Verbs</div>
+          <p>Some verbs don't follow the -ed rule: go → went, have → had, see → saw, come → came, know → knew. You'll need to memorise these!</p>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 5: ADJECTIVES ─── -->
+      <section class="lesson-section reveal" id="adjectives">
+        <div class="section-header">
+          <div class="section-num">5</div>
+          <h2>Adjectives & Adverbs</h2>
+        </div>
+
+        <h3>Adjectives</h3>
+        <p>An <strong>adjective</strong> describes a noun — it tells you more about a person, place, or thing. In English, adjectives come <em>before</em> the noun they describe.</p>
+
+        <div class="example-box">
+          <div class="example-label">📖 Examples</div>
+          <div class="example-text">
+            a <span class="highlight">big</span> house &nbsp;&nbsp; a <span class="highlight">beautiful</span> day &nbsp;&nbsp; a <span class="highlight">fast</span> car &nbsp;&nbsp; a <span class="highlight">friendly</span> teacher &nbsp;&nbsp; a <span class="highlight">difficult</span> question
+          </div>
+        </div>
+
+        <h3>Comparing with Adjectives</h3>
+        <table class="grammar-table">
+          <thead><tr><th>Type</th><th>Rule</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Normal</td><td>adjective</td><td>tall, fast, good</td></tr>
+            <tr><td>Comparative (2 things)</td><td>adjective + -er / more + adj</td><td>taller, faster, better</td></tr>
+            <tr><td>Superlative (3+ things)</td><td>the + adjective + -est / most</td><td>the tallest, the most beautiful</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Adverbs</h3>
+        <p>An <strong>adverb</strong> describes a verb — it tells you <em>how</em>, <em>when</em>, or <em>where</em> something happens. Most adverbs are made by adding <strong>-ly</strong> to an adjective.</p>
+
+        <div class="example-box">
+          <div class="example-label">📖 Adjective → Adverb</div>
+          <div class="example-text">
+            slow → <span class="highlight">slowly</span> &nbsp;&nbsp; quick → <span class="highlight">quickly</span> &nbsp;&nbsp; careful → <span class="highlight">carefully</span> &nbsp;&nbsp; quiet → <span class="highlight">quietly</span> &nbsp;&nbsp; happy → <span class="highlight">happily</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 6: SENTENCES ─── -->
+      <section class="lesson-section reveal" id="sentences">
+        <div class="section-header">
+          <div class="section-num">6</div>
+          <h2>Building Sentences</h2>
+        </div>
+
+        <p>A basic English sentence follows the <strong>SVO</strong> pattern: <em>Subject → Verb → Object</em>.</p>
+
+        <div class="example-box">
+          <div class="example-label">📖 SVO Structure</div>
+          <div class="example-text">
+            <span class="highlight">Kishor</span> (Subject) + <span class="highlight">reads</span> (Verb) + <span class="highlight">books</span> (Object)<br><br>
+            <span class="highlight">The cat</span> + <span class="highlight">eats</span> + <span class="highlight">fish.</span><br>
+            <span class="highlight">She</span> + <span class="highlight">loves</span> + <span class="highlight">music.</span><br>
+            <span class="highlight">They</span> + <span class="highlight">built</span> + <span class="highlight">a website.</span>
+          </div>
+        </div>
+
+        <h3>Questions</h3>
+        <p>To turn a statement into a question, swap the subject and auxiliary verb:</p>
+
+        <table class="grammar-table">
+          <thead><tr><th>Statement</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td>She <strong>is</strong> a teacher.</td><td><strong>Is</strong> she a teacher?</td></tr>
+            <tr><td>He <strong>can</strong> swim.</td><td><strong>Can</strong> he swim?</td></tr>
+            <tr><td>They <strong>have</strong> a car.</td><td><strong>Do</strong> they have a car?</td></tr>
+            <tr><td>You <strong>like</strong> coffee.</td><td><strong>Do</strong> you like coffee?</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Negatives</h3>
+        <p>Add <strong>not</strong> (or <strong>don't / doesn't / didn't</strong>) to make a sentence negative:</p>
+        <div class="example-pair">
+          <div class="ex-card ex-good"><div class="ex-label">✓ Negative</div>I <strong>do not</strong> like rain.<br>She <strong>doesn't</strong> eat meat.<br>They <strong>didn't</strong> come.</div>
+          <div class="ex-card ex-bad"><div class="ex-label">✗ Incorrect</div>I <span class="wrong">not like</span> rain.<br>She <span class="wrong">not eat</span> meat.<br>They <span class="wrong">not came</span>.</div>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 7: VOCABULARY ─── -->
+      <section class="lesson-section reveal" id="vocab">
+        <div class="section-header">
+          <div class="section-num">7</div>
+          <h2>Essential Vocabulary</h2>
+        </div>
+        <p>Click any card to reveal its meaning. Learning even 10 new words a day will transform your English in just a few months!</p>
+
+        <div class="vocab-grid">
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Achieve</div>
+            <div class="vocab-type">Verb</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Confident</div>
+            <div class="vocab-type">Adjective</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Opportunity</div>
+            <div class="vocab-type">Noun</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Improve</div>
+            <div class="vocab-type">Verb</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Essential</div>
+            <div class="vocab-type">Adjective</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Communicate</div>
+            <div class="vocab-type">Verb</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Knowledge</div>
+            <div class="vocab-type">Noun</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+          <div class="vocab-card" onclick="flipCard(this)">
+            <div class="vocab-word">Fluent</div>
+            <div class="vocab-type">Adjective</div>
+            <div class="vocab-meaning">Click to reveal →</div>
+            <div class="vocab-hint">Tap to flip!</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 8: PHRASES ─── -->
+      <section class="lesson-section reveal" id="phrases">
+        <div class="section-header">
+          <div class="section-num">8</div>
+          <h2>Common Everyday Phrases</h2>
+        </div>
+
+        <table class="grammar-table">
+          <thead><tr><th>Situation</th><th>Phrase</th><th>Meaning / Use</th></tr></thead>
+          <tbody>
+            <tr><td>Greeting</td><td>"How are you?"</td><td>Asking how someone is doing</td></tr>
+            <tr><td>Greeting reply</td><td>"I'm doing well, thanks."</td><td>Positive response to greeting</td></tr>
+            <tr><td>Introducing yourself</td><td>"My name is…"</td><td>Telling someone your name</td></tr>
+            <tr><td>Not understanding</td><td>"Could you repeat that?"</td><td>Asking someone to say it again</td></tr>
+            <tr><td>Not knowing a word</td><td>"What does ___ mean?"</td><td>Asking for a definition</td></tr>
+            <tr><td>Agreeing</td><td>"That's a good point."</td><td>Showing you agree</td></tr>
+            <tr><td>Politely disagreeing</td><td>"I see your point, but…"</td><td>Disagreeing respectfully</td></tr>
+            <tr><td>Asking for help</td><td>"Could you help me, please?"</td><td>Polite request for help</td></tr>
+            <tr><td>Thanking</td><td>"Thank you so much!"</td><td>Expressing gratitude</td></tr>
+            <tr><td>Apologising</td><td>"I'm sorry about that."</td><td>Saying sorry politely</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ─── SECTION 9: SPEAKING ─── -->
+      <section class="lesson-section reveal" id="speaking">
+        <div class="section-header">
+          <div class="section-num">9</div>
+          <h2>Speaking Practice</h2>
+        </div>
+        <p>Read the prompt, think of your answer, then click <strong>Show Answer</strong> to see a model response. Speaking out loud — even alone — is one of the best ways to improve!</p>
+
+        <div class="speaking-card">
+          <div class="speaking-label">🎤 Speaking Prompt 1</div>
+          <div class="speaking-prompt">"Introduce yourself in 3 sentences."</div>
+          <button class="reveal-btn" onclick="revealAnswer(this)">Show Example Answer</button>
+          <div class="speaking-answer">"My name is Kishor Naik. I am from India, and I am a web developer and educator. I enjoy teaching technology and helping others learn new skills."</div>
+        </div>
+
+        <div class="speaking-card">
+          <div class="speaking-label">🎤 Speaking Prompt 2</div>
+          <div class="speaking-prompt">"Describe your favourite hobby."</div>
+          <button class="reveal-btn" onclick="revealAnswer(this)">Show Example Answer</button>
+          <div class="speaking-answer">"My favourite hobby is coding. I enjoy it because it lets me create useful things from nothing. When I build a new website, I feel very happy and proud of my work."</div>
+        </div>
+
+        <div class="speaking-card">
+          <div class="speaking-label">🎤 Speaking Prompt 3</div>
+          <div class="speaking-prompt">"What did you do yesterday?"</div>
+          <button class="reveal-btn" onclick="revealAnswer(this)">Show Example Answer</button>
+          <div class="speaking-answer">"Yesterday, I woke up early and had breakfast. Then I worked on my website for a few hours. In the evening, I watched a movie and went to bed at ten o'clock."</div>
+        </div>
+
+        <div class="speaking-card">
+          <div class="speaking-label">🎤 Speaking Prompt 4</div>
+          <div class="speaking-prompt">"What are your plans for the future?"</div>
+          <button class="reveal-btn" onclick="revealAnswer(this)">Show Example Answer</button>
+          <div class="speaking-answer">"In the future, I want to improve my English skills and become fluent. I also plan to grow NkTechVision and help thousands of people learn technology for free."</div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 Speaking Tips</div>
+          <p>Don't worry about making mistakes — that's how you learn! Try to speak English for at least 10 minutes every day. Record yourself and listen back to notice areas you can improve.</p>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 10: FILL IN BLANKS ─── -->
+      <section class="lesson-section reveal" id="exercise">
+        <div class="section-header">
+          <div class="section-num">10</div>
+          <h2>Fill-in-the-Blanks</h2>
+        </div>
+
+        <div class="exercise-wrap">
+          <div class="exercise-title">Complete the Sentences</div>
+          <p class="exercise-sub">Choose the correct word from the box and type it in: &nbsp;<strong>are / was / their / doesn't / quickly / more beautiful</strong></p>
+
+          <div class="exercise-item">
+            <span>1.</span> The students <input type="text" class="blank-input" data-answer="are" placeholder="___"> studying in the library.
+          </div>
+          <div class="exercise-item">
+            <span>2.</span> She <input type="text" class="blank-input" data-answer="doesn't" placeholder="___"> like spicy food.
+          </div>
+          <div class="exercise-item">
+            <span>3.</span> The car <input type="text" class="blank-input" data-answer="was" placeholder="___"> parked outside the school.
+          </div>
+          <div class="exercise-item">
+            <span>4.</span> The children finished <input type="text" class="blank-input" data-answer="their" placeholder="___"> homework on time.
+          </div>
+          <div class="exercise-item">
+            <span>5.</span> He ran <input type="text" class="blank-input" data-answer="quickly" placeholder="___"> to catch the bus.
+          </div>
+          <div class="exercise-item">
+            <span>6.</span> This garden is <input type="text" class="blank-input" data-answer="more beautiful" placeholder="___"> than the park.
+          </div>
+
+          <button class="check-btn" onclick="checkExercise()">Check My Answers</button>
+          <div class="exercise-result" id="exResult"></div>
+        </div>
+      </section>
+
+      <!-- ─── SECTION 11: QUIZ ─── -->
+      <section class="lesson-section reveal" id="quiz">
+        <div class="quiz-wrap">
+          <div class="quiz-header">
+            <div class="quiz-icon">📝</div>
+            <div>
+              <div class="quiz-title">Final Knowledge Quiz</div>
+              <div class="quiz-sub">5 questions · Test everything you've learned</div>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">1. Which of these is a pronoun?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q1" value="a"> book</label>
+              <label class="q-opt"><input type="radio" name="q1" value="b"> run</label>
+              <label class="q-opt"><input type="radio" name="q1" value="c"> they</label>
+              <label class="q-opt"><input type="radio" name="q1" value="d"> quickly</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">2. What is the past tense of "go"?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q2" value="a"> goed</label>
+              <label class="q-opt"><input type="radio" name="q2" value="b"> went</label>
+              <label class="q-opt"><input type="radio" name="q2" value="c"> gone</label>
+              <label class="q-opt"><input type="radio" name="q2" value="d"> goes</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">3. Which sentence is grammatically correct?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q3" value="a"> She don't like cats.</label>
+              <label class="q-opt"><input type="radio" name="q3" value="b"> She doesn't likes cats.</label>
+              <label class="q-opt"><input type="radio" name="q3" value="c"> She doesn't like cats.</label>
+              <label class="q-opt"><input type="radio" name="q3" value="d"> She not like cats.</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">4. An adjective describes a ___.</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q4" value="a"> verb</label>
+              <label class="q-opt"><input type="radio" name="q4" value="b"> noun</label>
+              <label class="q-opt"><input type="radio" name="q4" value="c"> another adjective</label>
+              <label class="q-opt"><input type="radio" name="q4" value="d"> sentence</label>
+            </div>
+          </div>
+
+          <div class="q-item">
+            <div class="q-text">5. How many vowels does the English alphabet have?</div>
+            <div class="q-options">
+              <label class="q-opt"><input type="radio" name="q5" value="a"> 4</label>
+              <label class="q-opt"><input type="radio" name="q5" value="b"> 6</label>
+              <label class="q-opt"><input type="radio" name="q5" value="c"> 5</label>
+              <label class="q-opt"><input type="radio" name="q5" value="d"> 7</label>
+            </div>
+          </div>
+
+          <button class="quiz-submit" onclick="runQuiz()">Submit Answers</button>
+
+          <div class="quiz-result-box" id="quizResultBox">
+            <div class="qr-emoji" id="qrEmoji"></div>
+            <div class="qr-score" id="qrScore"></div>
+            <div class="qr-msg" id="qrMsg"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lesson Nav -->
+      <div class="lesson-nav">
+        <a href="index.html#courses" class="lnav-btn">
+          <span class="lnav-label">← Back to</span>
+          <span class="lnav-title">All Courses</span>
+        </a>
+        <a href="html_tutorial.html" class="lnav-btn next">
+          <span class="lnav-label">Next Course →</span>
+          <span class="lnav-title">HTML Tutorial</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Nk<span>Tech</span>Vision</div>
+    <p class="footer-copy">© 2025 NkTechVision. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="About_Me.html">About</a>
+      <a href="Contact_Us.html">Contact</a>
+      <a href="index.html#courses">Courses</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    // Sidebar active + progress
+    function setActive(el) {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+      updateProgress();
+    }
+    function updateProgress() {
+      const links = document.querySelectorAll('.sidebar-link');
+      const active = document.querySelector('.sidebar-link.active');
+      const idx = Array.from(links).indexOf(active) + 1;
+      const pct = Math.round((idx / links.length) * 100);
+      document.getElementById('progFill').style.width = pct + '%';
+      document.getElementById('progPct').textContent = pct + '%';
+    }
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 150) cur = s.id; });
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+      updateProgress();
+    });
+
+    // Vocab flip cards
+    const meanings = {
+      'Achieve': 'To successfully reach a goal after effort',
+      'Confident': 'Feeling sure of yourself and your abilities',
+      'Opportunity': 'A chance to do something good or useful',
+      'Improve': 'To make something better than before',
+      'Essential': 'Absolutely necessary; extremely important',
+      'Communicate': 'To share information or ideas with others',
+      'Knowledge': 'Facts and skills you have learned',
+      'Fluent': 'Able to speak a language easily and smoothly'
+    };
+    function flipCard(card) {
+      const word = card.querySelector('.vocab-word').textContent.trim();
+      const meaningEl = card.querySelector('.vocab-meaning');
+      const hintEl = card.querySelector('.vocab-hint');
+      if (!card.classList.contains('flipped')) {
+        card.classList.add('flipped');
+        meaningEl.textContent = meanings[word] || 'Meaning here';
+        hintEl.textContent = 'Tap to flip back';
+      } else {
+        card.classList.remove('flipped');
+        meaningEl.textContent = 'Click to reveal →';
+        hintEl.textContent = 'Tap to flip!';
+      }
+    }
+
+    // Speaking reveal
+    function revealAnswer(btn) {
+      const answer = btn.nextElementSibling;
+      answer.classList.toggle('show');
+      btn.textContent = answer.classList.contains('show') ? 'Hide Answer' : 'Show Example Answer';
+    }
+
+    // Fill in blanks
+    function checkExercise() {
+      const inputs = document.querySelectorAll('.blank-input');
+      let correct = 0;
+      inputs.forEach(inp => {
+        inp.classList.remove('correct-ans', 'wrong-ans');
+        const userVal = inp.value.trim().toLowerCase();
+        const correctVal = inp.dataset.answer.toLowerCase();
+        if (userVal === correctVal) { inp.classList.add('correct-ans'); correct++; }
+        else { inp.classList.add('wrong-ans'); }
+      });
+      const res = document.getElementById('exResult');
+      res.classList.add('show');
+      if (correct === inputs.length) {
+        res.className = 'exercise-result show pass';
+        res.textContent = `🎉 Perfect! All ${inputs.length} answers correct!`;
+      } else {
+        res.className = 'exercise-result show partial';
+        res.textContent = `You got ${correct} out of ${inputs.length} correct. Check the red boxes and try again!`;
+      }
+    }
+
+    // Quiz
+    const quizAnswers = { q1: 'c', q2: 'b', q3: 'c', q4: 'b', q5: 'c' };
+    function runQuiz() {
+      let score = 0;
+      Object.keys(quizAnswers).forEach(q => {
+        const sel = document.querySelector(`input[name="${q}"]:checked`);
+        document.querySelectorAll(`input[name="${q}"]`).forEach(o => {
+          const label = o.closest('.q-opt');
+          label.classList.remove('correct','wrong');
+          if (o.value === quizAnswers[q]) label.classList.add('correct');
+          else if (sel && o.value === sel.value) label.classList.add('wrong');
+          o.disabled = true;
+        });
+        if (sel && sel.value === quizAnswers[q]) score++;
+      });
+      const box = document.getElementById('quizResultBox');
+      box.classList.add('show');
+      if (score === 5) {
+        box.className = 'quiz-result-box show perfect';
+        document.getElementById('qrEmoji').textContent = '🏆';
+        document.getElementById('qrScore').textContent = '5 / 5 — Perfect!';
+        document.getElementById('qrMsg').textContent = 'Outstanding! You\'ve mastered the English basics. Keep it up!';
+      } else if (score >= 3) {
+        box.className = 'quiz-result-box show good';
+        document.getElementById('qrEmoji').textContent = '👍';
+        document.getElementById('qrScore').textContent = `${score} / 5 — Great job!`;
+        document.getElementById('qrMsg').textContent = 'Well done! Review the highlighted answers and you\'ll soon get a perfect score.';
+      } else {
+        box.className = 'quiz-result-box show good';
+        document.getElementById('qrEmoji').textContent = '📖';
+        document.getElementById('qrScore').textContent = `${score} / 5 — Keep Practising!`;
+        document.getElementById('qrMsg').textContent = 'Don\'t give up! Go back through the lessons and try the quiz again.';
+      }
+    }
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+    }), { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    updateProgress();
+  </script>
+</body>
+</html>
