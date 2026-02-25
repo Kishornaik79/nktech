@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 – Page Not Found | NkTechVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --border: rgba(255,255,255,0.07);
+      --accent: #5dffb0; --text: #e8e8f0; --muted: #7a7a9a; --card-bg: #16161f;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; overflow: hidden; }
+
+    /* Animated grid background */
+    .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; animation: gridMove 20s linear infinite; opacity: 0.4; }
+    @keyframes gridMove { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+
+    /* Glow */
+    .glow { position: fixed; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(93,255,176,0.06) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5%; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+
+    .content { position: relative; z-index: 1; max-width: 600px; animation: fadeUp 0.7s ease both; }
+
+    .error-code { font-family: 'JetBrains Mono', monospace; font-size: clamp(7rem, 20vw, 12rem); font-weight: 400; line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(93,255,176,0.3); letter-spacing: -8px; margin-bottom: 0.5rem; position: relative; user-select: none; }
+    .error-code::after { content: '404'; position: absolute; inset: 0; color: transparent; -webkit-text-stroke: 2px rgba(93,255,176,0.08); filter: blur(12px); animation: glitch 3s infinite; }
+    @keyframes glitch {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-4px, 2px); }
+      94% { transform: translate(4px, -2px); }
+      96% { transform: translate(-2px, -1px); }
+    }
+
+    .error-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); color: #ff8a8a; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.3rem 0.9rem; border-radius: 100px; margin-bottom: 1.5rem; }
+
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+    h1 em { font-style: normal; color: var(--accent); }
+    p { color: var(--muted); font-weight: 300; margin-bottom: 2.5rem; line-height: 1.8; font-size: 1.05rem; }
+
+    .action-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-primary { background: var(--accent); color: #000; padding: 0.85rem 2rem; border-radius: 100px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 30px rgba(93,255,176,0.25); font-family: 'Syne', sans-serif; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(93,255,176,0.4); }
+    .btn-secondary { background: transparent; color: var(--text); padding: 0.85rem 2rem; border-radius: 100px; font-weight: 500; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--border); transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); }
+
+    /* Quick links */
+    .quick-links { border-top: 1px solid var(--border); padding-top: 2rem; }
+    .ql-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1.2rem; }
+    .ql-grid { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .ql-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1.1rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 100px; text-decoration: none; color: var(--muted); font-size: 0.85rem; transition: all 0.2s; }
+    .ql-btn:hover { border-color: rgba(93,255,176,0.3); color: var(--accent); }
+
+    /* Terminal easter egg */
+    .terminal { background: #0d1117; border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; margin: 2rem auto 0; max-width: 420px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+    .t-line { margin-bottom: 0.3rem; color: var(--muted); }
+    .t-line span { color: var(--accent); }
+    .t-line.err { color: #ff8a8a; }
+    .cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+
+  <nav>
+    <a href="index.html" class="logo">Nk<span>Tech</span>Vision</a>
+  </nav>
+
+  <div class="content">
+    <div class="error-code">404</div>
+    <div class="error-badge">⚠️ Page Not Found</div>
+    <h1>Oops! This page<br>went <em>missing</em>.</h1>
+    <p>Looks like the page you're looking for doesn't exist, was moved, or maybe you followed a broken link. Let's get you back on track.</p>
+
+    <div class="action-row">
+      <a href="index.html" class="btn-primary">← Go Home</a>
+      <a href="index.html#courses" class="btn-secondary">Browse Courses</a>
+    </div>
+
+    <div class="quick-links">
+      <div class="ql-label">Quick Links</div>
+      <div class="ql-grid">
+        <a href="html_tutorial.html" class="ql-btn">🌐 HTML Tutorial</a>
+        <a href="About_Me.html" class="ql-btn">👤 About</a>
+        <a href="blog.html" class="ql-btn">📝 Blog</a>
+        <a href="Contact_Us.html" class="ql-btn">✉ Contact</a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="t-line">$ <span>navigate</span> --to page</div>
+      <div class="t-line err">Error: 404 Page not found</div>
+      <div class="t-line">$ <span>suggest</span> --fix</div>
+      <div class="t-line">→ Try returning <span>home</span> or pick a course</div>
+      <div class="t-line">$ <span class="cursor"></span></div>
+    </div>
+  </div>
+</body>
+</html>
